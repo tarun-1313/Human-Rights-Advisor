@@ -1145,13 +1145,6 @@
       setInterval(loadEmergencyReports, 30000);
     });
   </script>
-  <script>
-    document.querySelectorAll('.logout-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = 'index.html';
-      });
-    });
-  </script>
+  <script type="module" src="../dashboard.js"></script>
 </body>
 </html>

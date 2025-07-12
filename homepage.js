@@ -3,14 +3,13 @@ import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/fire
 import{getFirestore, getDoc, doc} from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js"
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA0zWIhY5p3FX-f_8nThI4jsN-tKcd6odM",
-  authDomain: "human-right-advisor-5f2df.firebaseapp.com",
-  projectId: "human-right-advisor-5f2df",
-  storageBucket: "human-right-advisor-5f2df.firebasestorage.app",
-  messagingSenderId: "127941665693",
-  appId: "1:127941665693:web:84bc42e8eb037decd0c574",
-  measurementId: "G-4J14BXP8E2"
-  };
+  apiKey: "AIzaSyBCsK8R0ygouAA-Y0yDbRdQ5VhrfCePjdU",
+  authDomain: "police-login-b374e.firebaseapp.com",
+  projectId: "police-login-b374e",
+  storageBucket: "police-login-b374e.firebasestorage.app",
+  messagingSenderId: "435121696436",
+  appId: "1:435121696436:web:471f28691510808231b1e1"
+};
  
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
