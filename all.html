@@ -1,0 +1,5478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Human Rights Advisor</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+  /* Reset and base styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary-color: #004aad;
+    --secondary-color: #022f71;
+    --error-color: #c0392b;
+    --success-color: #27ae60;
+    --background-color: #f9f9f9;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --highlight-color: #fff3cd;
+  }
+  
+  /* Auth Navigation Styles */
+  .auth-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--primary-color);
+  }
+  
+  .auth-btn {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .auth-btn:hover {
+    background: white;
+    color: var(--primary-color);
+  }
+  
+  .auth-btn.active {
+    background: white;
+    color: var(--primary-color);
+  }
+
+  .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+
+  .btn:hover {
+    background-color: var(--secondary-color);
+  }
+
+  .article-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Mobile responsive styles */
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .nav-links {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .cards-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: #222;
+  }
+
+  /* New Navigation Styles */
+  .navbar {
+    background-color: var(--primary-color);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .nav-logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    margin-left: auto;
+  }
+
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .nav-link.active {
+    background-color: var(--secondary-color);
+  }
+
+  .nav-link:hover {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+
+  .logout-btn {
+    background-color: var(--error-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+
+  .logout-btn:hover {
+    background-color: #a93226;
+  }
+
+  /* Home Section Cards */
+  .home-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Search styles */
+  .search-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .search-box {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  #searchInput {
+    width: 100%;
+    padding: 1rem;
+    padding-right: 3rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+  }
+
+  #searchInput:focus {
+    box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.2);
+  }
+
+  #clearSearchBtn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  #clearSearchBtn:hover {
+    color: var(--error-color);
+  }
+
+  .filter-chips {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .filter-chip {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+    background: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-chip:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .filter-chip.active {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  #searchResults {
+    margin-top: 2rem;
+  }
+
+  #searchResults article {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  #searchResults .highlight {
+    background: var(--highlight-color);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+
+  .search-stats {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .no-results {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    font-style: italic;
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  .card h3 {
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .card-icon i {
+    font-size: 2rem;
+  }
+
+  .card-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .card-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+
+  .quick-actions {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .quick-actions h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    background: white;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .action-btn:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .action-btn.emergency {
+    background: var(--error-color);
+    border-color: var(--error-color);
+    color: white;
+  }
+
+  .action-btn.emergency:hover {
+    background: #a93226;
+    border-color: #a93226;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .card p {
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* Advisor Section Styles */
+  .advisor-section {
+  padding: 2rem;
+}
+
+.search-box {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#advisorSearch {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+#advisorSearch:focus {
+  box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.2);
+}
+
+.search-btn {
+  padding: 0 2rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.search-btn:hover {
+  background: var(--secondary-color);
+}
+
+.clear-btn {
+  padding: 0 1.5rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.clear-btn:hover {
+  background: #c0392b;
+}
+
+.advisor-results {
+  margin-top: 2rem;
+}
+
+.search-result {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.search-result:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.search-result h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.search-result p {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+
+.highlight {
+  background: var(--highlight-color);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+
+.search-stats {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.no-results, .initial-text {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  font-style: italic;
+}
+
+  .search-container {
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+
+  .search-box {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-box input {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  .search-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .advisor-results {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .initial-text {
+    text-align: center;
+    color: #666;
+  }
+
+  /* Articles Section Styles */
+  .articles-section {
+    padding: 2rem;
+  }
+
+  .article-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+  }
+
+  .article-card h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .article-content {
+    color: #444;
+    line-height: 1.6;
+  }
+
+  .article-content p {
+    margin: 0.75rem 0;
+  }
+
+  .article-content strong {
+    color: var(--secondary-color);
+  }
+
+  .articles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .articles-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  #articlesList {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .article-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .article-item h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+  }
+
+  /* Report Crime Form Styles */
+  .report-section {
+    padding: 2rem;
+  }
+
+  .report-form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .report-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .report-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .report-form input,
+  .report-form textarea,
+  .report-form select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  .report-form input:focus,
+  .report-form textarea:focus,
+  .report-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 74, 173, 0.1);
+  }
+
+  .report-form textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .report-form small {
+    display: block;
+    color: #666;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .report-form input[type="file"] {
+    padding: 0.5rem;
+    border: 1px dashed #ddd;
+    background: #f8f9fa;
+  }
+
+  .report-form input[type="file"]:hover {
+    background: #f1f3f5;
+  }
+
+  .report-form button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .report-form button[type="submit"]:hover {
+    background: var(--secondary-color);
+  }
+
+  .report-form .btn-secondary {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .report-form .btn-secondary:hover {
+    background: var(--primary-color);
+  }
+
+  .report-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .report-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  .form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .form-group small {
+    display: block;
+    color: #666;
+    margin-top: 0.25rem;
+  }
+
+  .btn-secondary {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background: var(--primary-color);
+  }
+
+  /* Contact Section */
+  .contact-section {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .contact-info {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-item {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Existing styles remain unchanged */
+  header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* Section visibility control */
+  .section {
+    display: none;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section.active {
+    display: block !important;
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+
+  /* Auth navigation visibility */
+  .auth-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    position: relative;
+    z-index: 1000;
+  }
+
+  main {
+    max-width: 960px;
+    margin: 1.5rem auto 3rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  }
+  h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+  }
+  nav {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  nav button {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  nav button:hover,
+  nav button.active {
+    background: var(--primary-color);
+  }
+  form {
+    max-width: 400px;
+    margin: 0 auto 2rem;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin: 0.7rem 0 0.3rem;
+  }
+  input[type="text"], input[type="password"], input[type="email"], textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 3px var(--primary-color);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  button[type="submit"], button[type="button"] {
+    margin-top: 1rem;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.65rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover, button[type="button"]:hover {
+    background-color: var(--secondary-color);
+  }
+  .hidden {
+    display: none;
+  }
+  .message {
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    border-radius: 4px;
+  }
+  .message.error {
+    color: white;
+    background-color: var(--error-color);
+  }
+  .message.success {
+    color: white;
+    background-color: var(--success-color);
+  }
+  #searchResults {
+    margin-top: 1rem;
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: #fefefe;
+  }
+  #searchResults article {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+  }
+  #searchResults article:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  #searchBar {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    margin: 1rem auto 1.5rem;
+    gap: 10px;
+  }
+  .search-controls {
+    display: flex;
+    gap: 5px;
+  }
+  #searchInput {
+    flex-grow: 1;
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+  }
+  .filter-chip {
+    background: var(--background-color);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .filter-chip.active {
+    background: var(--primary-color);
+    color: white;
+  }
+  #searchResults article {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  #searchResults article:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .highlight {
+    background-color: var(--highlight-color);
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .article-number {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  .clear-search {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .clear-search:hover {
+    background: #e9ecef;
+  }
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+  .search-stats {
+    text-align: center;
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  #searchButton,
+  #showAllArticlesBtn {
+    padding: 0 1rem;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  #searchButton:hover,
+  #showAllArticlesBtn:hover {
+    background-color: var(--secondary-color);
+  }
+  #loginSignupToggle, #policeNavToggleLogin, #policeNavToggleSignup {
+    text-align: center;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+  }
+  #loginSignupToggle button, #policeNavToggleLogin button, #policeNavToggleSignup button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  /* Messages container for admin & police */
+  #messagesContainer {
+    margin-top: 1em;
+    border: 1px solid #bbb;
+    padding: 1rem;
+    border-radius: 8px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: #fafafa;
+  }
+  #messagesContainer h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+  }
+  #messagesList {
+    list-style: none;
+    padding-left: 0;
+  }
+  #messagesList li {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 4px;
+    margin-bottom: 8px;
+  }
+  /* Police alarm style */
+  #alarmText {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem;
+    animation: blink 1s infinite;
+    margin-top: 1rem;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+
+  /* Police Dashboard Styles */
+  .police-dashboard {
+    padding: 2rem;
+  }
+
+  .alert-banner {
+    background-color: var(--error-color);
+    color: white;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { background-color: var(--error-color); }
+    50% { background-color: #e74c3c; }
+    100% { background-color: var(--error-color); }
+  }
+
+  .reports-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .filter-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 20px;
+    background: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .report-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .report-card.urgent {
+    border-left-color: var(--error-color);
+  }
+
+  .report-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .report-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-investigating {
+    background: #cce5ff;
+    color: #004085;
+  }
+
+  .status-resolved {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .report-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .report-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .action-btn.investigate {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .action-btn.resolve {
+    background: var(--success-color);
+    color: white;
+  }
+</style>
+</head>
+<body>
+<!-- Top Navigation Buttons -->
+<nav class="auth-nav">
+  <button onclick="showSection('userLoginSection')" class="auth-btn active" id="btnUserLogin">User Login</button>
+  <button onclick="showSection('userSignupSection')" class="auth-btn" id="btnUserSignup">User Signup</button>
+  <button onclick="showSection('policeLoginSection')" class="auth-btn" id="btnPoliceLogin">Police Login</button>
+  <button onclick="showSection('policeSignupSection')" class="auth-btn" id="btnPoliceSignup">Police Signup</button>
+</nav>
+
+<!-- Login and Signup Sections -->
+<section id="userLoginSection" class="section login-section active">
+  <h2>User Login</h2>
+  <form id="userLoginForm" onsubmit="return handleUserLogin(event)">
+    <div class="form-group">
+      <label for="userLoginUsername">Username</label>
+      <input type="text" id="userLoginUsername" required>
+    </div>
+    <div class="form-group">
+      <label for="userLoginPassword">Password</label>
+      <input type="password" id="userLoginPassword" required>
+    </div>
+    <button type="submit" class="btn">Login</button>
+  </form>
+  <p>Don't have an account? <button onclick="showSection('userSignupSection')" class="link-btn">Sign up</button></p>
+  <p>Are you a police officer? <button onclick="showSection('policeLoginSection')" class="link-btn">Police Login</button></p>
+</section>
+
+<section id="userSignupSection" class="section signup-section">
+  <h2>User Signup</h2>
+  <form id="userSignupForm" onsubmit="return handleUserSignup(event)">
+    <div class="form-group">
+      <label for="userSignupUsername">Username</label>
+      <input type="text" id="userSignupUsername" required>
+    </div>
+    <div class="form-group">
+      <label for="userSignupPassword">Password</label>
+      <input type="password" id="userSignupPassword" required>
+    </div>
+    <div class="form-group">
+      <label for="userSignupConfirmPassword">Confirm Password</label>
+      <input type="password" id="userSignupConfirmPassword" required>
+    </div>
+    <button type="submit" class="btn">Sign Up</button>
+  </form>
+  <p>Already have an account? <button onclick="showSection('userLoginSection')" class="link-btn">Login</button></p>
+</section>
+
+<section id="policeLoginSection" class="section login-section">
+  <h2>Police Login</h2>
+  <form id="policeLoginForm" onsubmit="return handlePoliceLogin(event)">
+    <div class="form-group">
+      <label for="policeLoginID">Police ID</label>
+      <input type="text" id="policeLoginID" required>
+    </div>
+    <div class="form-group">
+      <label for="policeLoginPassword">Password</label>
+      <input type="password" id="policeLoginPassword" required>
+    </div>
+    <button type="submit" class="btn">Login</button>
+  </form>
+  <p>Don't have an account? <button onclick="showSection('policeSignupSection')" class="link-btn">Police Sign up</button></p>
+</section>
+
+<section id="policeSignupSection" class="section signup-section">
+  <h2>Police Signup</h2>
+  <form id="policeSignupForm" onsubmit="return handlePoliceSignup(event)">
+    <div class="form-group">
+      <label for="policeSignupID">Police ID</label>
+      <input type="text" id="policeSignupID" required>
+    </div>
+    <div class="form-group">
+      <label for="policeSignupName">Full Name</label>
+      <input type="text" id="policeSignupName" required>
+    </div>
+    <div class="form-group">
+      <label for="policeSignupPassword">Password</label>
+      <input type="password" id="policeSignupPassword" required>
+    </div>
+    <div class="form-group">
+      <label for="policeSignupConfirmPassword">Confirm Password</label>
+      <input type="password" id="policeSignupConfirmPassword" required>
+    </div>
+    <button type="submit" class="btn">Sign Up</button>
+  </form>
+  <p>Already have an account? <button onclick="showSection('policeLoginSection')" class="link-btn">Police Login</button></p>
+</section>
+
+<!-- Navigation Bar (Hidden by default) -->
+<nav class="navbar" id="mainNavbar" style="display: none;">
+  <div class="nav-container">
+    <a href="#" class="nav-logo">Human Rights Advisor</a>
+    <div class="nav-links">
+      <button onclick="navigateTo('home-section')" class="nav-link active">Home</button>
+      <button onclick="navigateTo('advisorSection')" class="nav-link">Human Rights Advisor</button>
+      <button onclick="navigateTo('allArticlesSection')" class="nav-link">Articles</button>
+      <button onclick="navigateTo('reportCrimeSection')" class="nav-link">Report Crime</button>
+      <button onclick="navigateTo('contact-section')" class="nav-link">Contact Us</button>
+      <button onclick="handleLogout()" class="nav-link logout-btn">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Home Section -->
+<section id="home-section" class="section home-section">
+  <h2>Welcome to Human Rights Advisor</h2>
+  <div class="cards-container">
+    <div class="card" onclick="navigateTo('advisorSection')">
+      <div class="card-icon"><i class="fas fa-search"></i></div>
+      <h3>Human Rights Advisor</h3>
+      <p>Get expert advice on human rights issues and find relevant solutions.</p>
+      <button class="card-btn">Get Advice <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="card" onclick="navigateTo('allArticlesSection')">
+      <div class="card-icon"><i class="fas fa-book-open"></i></div>
+      <h3>Constitutional Articles</h3>
+      <p>Browse all 395 articles with detailed explanations and solutions.</p>
+      <button class="card-btn">View Articles <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="card" onclick="navigateTo('reportCrimeSection')">
+      <div class="card-icon"><i class="fas fa-gavel"></i></div>
+      <h3>Report a Crime</h3>
+      <p>Report human rights violations for immediate action.</p>
+      <button class="card-btn">File Report <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="card" onclick="navigateTo('contact-section')">
+      <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
+      <h3>Emergency Contact</h3>
+      <p>Get immediate assistance through our emergency helpline numbers.</p>
+      <button class="card-btn">Contact Now <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <h3>Quick Actions</h3>
+    <div class="action-buttons">
+      <button onclick="navigateTo('reportCrimeSection')" class="action-btn emergency">
+        <i class="fas fa-exclamation-triangle"></i>
+        Report Emergency
+      </button>
+      <button onclick="navigateTo('allArticlesSection')" class="action-btn">
+        <i class="fas fa-search"></i>
+        Search Articles
+      </button>
+      <button onclick="navigateTo('advisorSection')" class="action-btn">
+        <i class="fas fa-question-circle"></i>
+        Get Help
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Human Rights Advisor Section -->
+<section id="advisorSection" class="section advisor-section">
+  <h2>Human Rights Advisor</h2>
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" id="advisorSearch" placeholder="Describe your problem (e.g. discrimination, education, arrest)..." />
+      <button onclick="searchAdvice()" class="search-btn">Search</button>
+      <button onclick="clearSearch()" class="clear-btn">Clear</button>
+    </div>
+    <div class="filter-chips">
+      <button class="filter-chip active" data-category="all">All Articles</button>
+      <button class="filter-chip" data-category="fundamental">Fundamental Rights</button>
+      <button class="filter-chip" data-category="dpsp">Directive Principles</button>
+      <button class="filter-chip" data-category="emergency">Emergency Provisions</button>
+    </div>
+    <div id="advisorResults" class="advisor-results">
+      <p class="initial-text">Enter your problem or issue above to find relevant articles and solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- All Articles Section -->
+<section id="allArticlesSection" class="section articles-section">
+  <h2>Constitutional Articles</h2>
+  <div class="articles-container">
+    <div id="articlesList"></div>
+  </div>
+</section>
+
+<!-- Report Crime Section -->
+<section id="reportCrimeSection" class="section report-section">
+  <h2>Report a Crime</h2>
+  <div class="report-container">
+    <form id="reportForm" onsubmit="return handleReportSubmit(event)">
+      <div class="form-group">
+        <label for="reportName">Full Name</label>
+        <input type="text" id="reportName" required placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label for="reportMobile">Mobile Number</label>
+        <input type="tel" id="reportMobile" pattern="[0-9+\s-]{10,15}" required placeholder="Enter your mobile number">
+        <small>Enter your mobile number with country code (e.g., +91 98765 43210)</small>
+      </div>
+      <div class="form-group">
+        <label for="reportEmail">Email Address</label>
+        <input type="email" id="reportEmail" required placeholder="Enter your email address">
+      </div>
+      <div class="form-group">
+        <label for="reportLocation">Location of Incident</label>
+        <input type="text" id="reportLocation" required placeholder="Enter the location where the incident occurred">
+        <button type="button" onclick="getCurrentLocation()" class="btn-secondary">Get Current Location</button>
+      </div>
+      <div class="form-group">
+        <label for="reportDate">Date of Incident</label>
+        <input type="date" id="reportDate" required>
+      </div>
+      <div class="form-group">
+        <label for="reportTime">Time of Incident</label>
+        <input type="time" id="reportTime" required>
+      </div>
+      <div class="form-group">
+        <label for="reportType">Type of Crime</label>
+        <select id="reportType" required>
+          <option value="">Select type of crime</option>
+          <option value="humanRights">Human Rights Violation</option>
+          <option value="domestic">Domestic Violence</option>
+          <option value="corruption">Corruption</option>
+          <option value="discrimination">Discrimination</option>
+          <option value="assault">Assault</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="reportProblem">Detailed Description</label>
+        <textarea id="reportProblem" rows="5" required placeholder="Please provide a detailed description of the incident..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="reportWitnesses">Witness Information (if any)</label>
+        <textarea id="reportWitnesses" rows="3" placeholder="Enter witness names and contact information (if available)"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="reportEvidence">Evidence Upload</label>
+        <input type="file" id="reportEvidence" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx">
+        <small>You can upload images, videos, audio, or documents as evidence</small>
+      </div>
+      <button type="submit" class="btn">Submit Report</button>
+    </form>
+    <div id="reportMessage" class="message"></div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact-section" class="section contact-section">
+  <div class="contact-info">
+    <h2>Contact Us</h2>
+    <div class="contact-item">
+      <i class="fas fa-phone"></i>
+      <p>+91 9518391245</p>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-phone"></i>
+      <p>+91 72497 84719</p>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-phone"></i>
+      <p>+91 80556 31006</p>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-envelope"></i>
+      <p>tarunchaudhari1313@gmail.com</p>
+    </div>
+  </div>
+</section>
+
+<!-- Police Dashboard Section -->
+<section id="policeDashboardSection" class="section police-dashboard">
+  <h2>Police Dashboard</h2>
+  <div class="alert-banner" id="newReportsAlert" style="display: none;">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>New Reports Received!</span>
+    <audio id="sirenAudio" src="C:\Users\Admin\Downloads\civil-defense-siren-128262.mp3"></audio>
+  </div>
+  
+  <div class="reports-container">
+    <div class="reports-header">
+      <h3>Crime Reports</h3>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Reports</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="investigating">Investigating</button>
+        <button class="filter-btn" data-filter="resolved">Resolved</button>
+      </div>
+    </div>
+    
+    <div class="reports-list" id="policeReportsList">
+      <!-- Reports will be dynamically added here -->
+    </div>
+  </div>
+</section>
+
+<style>
+/* Police Dashboard Styles */
+.police-dashboard {
+  padding: 2rem;
+}
+
+.alert-banner {
+  background-color: var(--error-color);
+  color: white;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { background-color: var(--error-color); }
+  50% { background-color: #e74c3c; }
+  100% { background-color: var(--error-color); }
+}
+
+.reports-container {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  background: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.report-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.report-card.urgent {
+  border-left-color: var(--error-color);
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.report-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-investigating {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-resolved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.report-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.report-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.action-btn.investigate {
+  background: var(--primary-color);
+  color: white;
+}
+
+.action-btn.resolve {
+  background: var(--success-color);
+  color: white;
+}
+</style>
+
+<script>
+// Global variables
+let loggedInUser = null;
+let loggedInPolice = null;
+
+const STORAGE_USERS = 'hra_users';
+const STORAGE_POLICE = 'hra_police';
+const STORAGE_REPORTS = 'hra_reports';
+const STORAGE_MESSAGES = 'hra_messages';
+const adminMobileNumber = "9518391245";
+
+// Constitution Articles Data
+let constitutionArticles = [
+  {
+    articleNumber: "13",
+    title: "Laws inconsistent with Fundamental Rights",
+    summary: "Laws that violate fundamental rights shall be void to the extent of inconsistency. The State shall not make any law that takes away or abridges fundamental rights.",
+    solution: "If a law violates fundamental rights, you can challenge it in the High Court or Supreme Court through a writ petition."
+  },
+  {
+    articleNumber: "14",
+    title: "Equality Before Law",
+    summary: "The State shall not deny to any person equality before the law or the equal protection of the laws within the territory of India.",
+    solution: "If you face discrimination, you can file a complaint with the National Human Rights Commission or approach the court directly under Article 32 or Article 226."
+  },
+  {
+    articleNumber: "15",
+    title: "Prohibition of Discrimination",
+    summary: "The State shall not discriminate against any citizen on grounds only of religion, race, caste, sex, place of birth or any of them.",
+    solution: "If you face discrimination based on these grounds, you can file a complaint with the State Human Rights Commission or seek legal remedy through courts."
+  },
+  {
+    articleNumber: "16",
+    title: "Equality of Opportunity",
+    summary: "There shall be equality of opportunity for all citizens in matters relating to employment or appointment to any office under the State.",
+    solution: "In case of discrimination in employment, you can approach the appropriate administrative tribunal or file a writ petition in the High Court."
+  },
+  {
+    articleNumber: "19",
+    title: "Protection of Certain Rights",
+    summary: "All citizens shall have the right to freedom of speech, expression, assembly, association, movement, residence, and profession.",
+    solution: "If these fundamental rights are violated, you can file a writ petition under Article 32 in the Supreme Court or under Article 226 in the High Court."
+  },
+  {
+    articleNumber: "21",
+    title: "Right to Life and Personal Liberty",
+    summary: "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+    solution: "For violation of right to life or personal liberty, you can file a habeas corpus petition or approach the Human Rights Commission."
+  },
+  {
+    articleNumber: "17",
+    title: "Abolition of Untouchability",
+    summary: "Untouchability is abolished and its practice in any form is forbidden. Enforcement of any disability arising out of untouchability shall be an offence.",
+    solution: "File complaint under SC/ST Prevention of Atrocities Act or approach SC/ST Commission."
+  },
+  {
+    articleNumber: "23",
+    title: "Prohibition of traffic in human beings and forced labor",
+    summary: "Traffic in human beings and forced labor are prohibited and any contravention shall be an offence punishable in accordance with law.",
+    solution: "Report to Anti-Human Trafficking Unit or contact National Human Rights Commission."
+  },
+  {
+    articleNumber: "39A",
+    title: "Equal justice and free legal aid",
+    summary: "The State shall provide free legal aid to ensure that opportunities for securing justice are not denied to any citizen by reason of economic or other disabilities.",
+    solution: "Contact District Legal Services Authority for free legal aid or approach Legal Aid Clinic."
+  },
+  {
+    articleNumber: "226",
+    title: "Power of High Courts to issue writs",
+    summary: "High Courts have the power to issue writs for the enforcement of fundamental rights and other legal rights within their territorial jurisdiction.",
+    solution: "File a writ petition in the High Court for violation of fundamental rights or any other legal right."
+  },
+  {
+    articleNumber: "300A",
+    title: "Right to Property",
+    summary: "No person shall be deprived of their property save by authority of law.",
+    solution: "In case of illegal property deprivation, file civil suit or approach revenue authorities."
+  },
+  {
+    articleNumber: "51",
+    title: "Promotion of international peace and security",
+    summary: "The State shall endeavor to promote international peace and security, maintain just and honorable relations between nations.",
+    solution: "For international law violations, approach Ministry of External Affairs or relevant international forums."
+  },
+  {
+    articleNumber: "38",
+    title: "State to secure a social order for welfare",
+    summary: "The State shall strive to promote the welfare of the people by securing and protecting a social order based on justice - social, economic and political.",
+    solution: "File PIL for implementation of welfare schemes or approach relevant government department."
+  },
+  {
+    articleNumber: "41",
+    title: "Right to work, education and public assistance",
+    summary: "The State shall make effective provision for securing right to work, education and public assistance in cases of unemployment, old age, sickness and disablement.",
+    solution: "Approach Social Welfare Department or file representation for implementation of welfare schemes."
+  },
+  {
+    articleNumber: "42",
+    title: "Provision for just and humane work conditions",
+    summary: "The State shall make provision for securing just and humane conditions of work and for maternity relief.",
+    solution: "File complaint with Labor Department or approach Labor Court for workplace issues."
+  },
+  {
+    articleNumber: "43",
+    title: "Living wage for workers",
+    summary: "The State shall endeavor to secure living wage and decent standard of life to all workers, agricultural, industrial or otherwise.",
+    solution: "Contact Labor Commissioner or Trade Union for wage-related issues."
+  },
+  {
+    articleNumber: "45",
+    title: "Early childhood care and education",
+    summary: "The State shall endeavor to provide early childhood care and education for all children until they complete the age of six years.",
+    solution: "Contact State Education Department or Women & Child Development Department for issues related to early childhood education."
+  },
+  {
+    articleNumber: "46",
+    title: "Protection of weaker sections",
+    summary: "The State shall promote with special care the educational and economic interests of the weaker sections of the people, particularly the SC/STs.",
+    solution: "Approach SC/ST Commission or Social Welfare Department for protection of rights."
+  },
+  {
+    articleNumber: "51A",
+    title: "Fundamental Duties",
+    summary: "Every citizen shall abide by the Constitution, respect national symbols, promote harmony, protect environment, develop scientific temper, and strive for excellence.",
+    solution: "While fundamental duties are not directly enforceable, they serve as moral obligations and guiding principles for citizens."
+  },
+  {
+    articleNumber: "21A",
+    title: "Right to Education",
+    summary: "The State shall provide free and compulsory education to all children between age six and fourteen years.",
+    solution: "If a child is denied education, you can complain to the local education authorities or file a PIL in the High Court."
+  },
+  {
+    articleNumber: "22",
+    title: "Protection Against Arrest and Detention",
+    summary: "No person shall be detained in custody without being informed of the grounds for arrest nor shall be denied the right to consult and defend by a legal practitioner of his choice.",
+    solution: "In case of illegal detention, you can file a habeas corpus petition or contact the legal aid services for immediate assistance."
+  }
+];
+
+// Search functionality
+function searchArticles(query) {
+  query = query.trim().toLowerCase();
+  if (!query) return [];
+  
+  // Define problem keywords mapping
+  const problemMap = {
+    'discrimination': ['14', '15', '16'],
+    'equality': ['14', '15', '16'],
+    'education': ['21A', '30'],
+    'job': ['16', '19'],
+    'work': ['16', '19'],
+    'speech': ['19'],
+    'expression': ['19'],
+    'arrest': ['22'],
+    'police': ['22'],
+    'life': ['21'],
+    'liberty': ['21'],
+    'detention': ['22'],
+    'rights': ['14', '19', '21'],
+    'freedom': ['19', '25']
+  };
+
+  // Calculate relevance score for each article
+  function getScore(article, searchTerm) {
+    let score = 0;
+    const title = article.title.toLowerCase();
+    const summary = article.summary.toLowerCase();
+    const solution = article.solution.toLowerCase();
+    
+    // Check problem keywords
+    for (const [problem, articles] of Object.entries(problemMap)) {
+      if (searchTerm.includes(problem) && articles.includes(article.articleNumber)) {
+        score += 20;
+      }
+    }
+    
+    // Direct matches
+    if (title.includes(searchTerm)) score += 10;
+    if (summary.includes(searchTerm)) score += 5;
+    if (solution.includes(searchTerm)) score += 5;
+    
+    return score;
+  }
+
+  // Filter and sort articles
+  const searchTerms = query.split(' ').filter(term => term.length > 0);
+  
+  return constitutionArticles
+    .map(article => ({
+      ...article,
+      score: searchTerms.reduce((sum, term) => sum + getScore(article, term), 0)
+    }))
+    .filter(article => article.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
+
+// Display search results
+function displaySearchResults(results, query) {
+  const searchResults = document.getElementById('searchResults');
+  
+  if (!query) {
+    searchResults.innerHTML = '<p class="no-results">Enter your problem or issue above to find relevant articles and solutions.</p>';
+    return;
+  }
+  
+  if (results.length === 0) {
+    searchResults.innerHTML = '<p class="no-results">No matching articles found. Try different keywords.</p>';
+    return;
+  }
+
+  function highlightText(text, searchTerms) {
+    let highlighted = text;
+    searchTerms.forEach(term => {
+      if (term.length < 3) return;
+      const regex = new RegExp(`(${term})`, 'gi');
+      highlighted = highlighted.replace(regex, '<span class="highlight">$1</span>');
+    });
+    return highlighted;
+  }
+
+  const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+  
+  let html = `<div class="search-stats">Found ${results.length} matching article${results.length === 1 ? '' : 's'}</div>`;
+  
+  results.forEach(article => {
+    html += `
+      <article class="search-result">
+        <h3>Article ${article.articleNumber}: ${highlightText(article.title, searchTerms)}</h3>
+        <p><strong>Summary:</strong> ${highlightText(article.summary, searchTerms)}</p>
+        <p><strong>Solution:</strong> ${highlightText(article.solution, searchTerms)}</p>
+      </article>
+    `;
+  });
+  
+  searchResults.innerHTML = html;
+}
+
+const btnUserLogin = document.getElementById('btnUserLogin');
+const btnUserSignup = document.getElementById('btnUserSignup');
+const btnPoliceLogin = document.getElementById('btnPoliceLogin');
+const btnPoliceSignup = document.getElementById('btnPoliceSignup');
+
+const userLoginSection = document.getElementById('userLoginSection');
+const userSignupSection = document.getElementById('userSignupSection');
+const policeLoginSection = document.getElementById('policeLoginSection');
+const policeSignupSection = document.getElementById('policeSignupSection');
+const userDashboardSection = document.getElementById('userDashboardSection');
+const policeDashboardSection = document.getElementById('policeDashboardSection');
+
+const userLoginForm = document.getElementById('userLoginForm');
+const userSignupForm = document.getElementById('userSignupForm');
+const policeLoginForm = document.getElementById('policeLoginForm');
+const policeSignupForm = document.getElementById('policeSignupForm');
+const reportForm = document.getElementById('reportForm');
+const reportMessage = document.getElementById('reportMessage');
+
+const userLoginMessage = document.getElementById('userLoginMessage');
+const userSignupMessage = document.getElementById('userSignupMessage');
+const policeLoginMessage = document.getElementById('policeLoginMessage');
+const policeSignupMessage = document.getElementById('policeSignupMessage');
+
+const btnDetectLocation = document.getElementById('detectLocationBtn');
+const reportLocationInput = document.getElementById('reportLocation');
+
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
+const searchResults = document.getElementById('searchResults');
+
+const reportsList = document.getElementById('reportsList');
+const policeLogoutBtn = document.getElementById('policeLogoutBtn');
+
+const messagesList = document.getElementById('messagesList');
+
+const showSignupBtn = document.getElementById('showSignupBtn');
+const showLoginBtn = document.getElementById('showLoginBtn');
+const showPoliceSignupBtn = document.getElementById('showPoliceSignupBtn');
+const showPoliceLoginBtn = document.getElementById('showPoliceLoginBtn');
+
+const allArticlesModal = document.getElementById('allArticlesModal');
+const allArticlesList = document.getElementById('allArticlesList');
+const allArticlesCloseBtn = allArticlesModal.querySelector('.closeBtn');
+const showAllArticlesBtn = document.getElementById('showAllArticlesBtn');
+
+function navigateTo(sectionId) {
+  if (!loggedInUser && !loggedInPolice) {
+    alert('Please log in first');
+    return;
+  }
+
+  // Hide all sections first
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+    section.style.display = 'none';
+  });
+
+  // Show the selected section
+  const targetSection = document.getElementById(sectionId);
+  if (targetSection) {
+    targetSection.style.display = 'block';
+    targetSection.classList.add('active');
+
+    // Update active state in navbar
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(sectionId)) {
+        link.classList.add('active');
+      }
+    });
+
+    // If it's the articles section, make sure to display articles
+    if (sectionId === 'allArticlesSection') {
+      displayAllArticles();
+    }
+
+    // Scroll to top of the section
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function searchAdvice() {
+  const query = document.getElementById('advisorSearch').value;
+  const results = searchArticles(query);
+  displaySearchResults(results, query);
+}
+
+function clearSearch() {
+  document.getElementById('advisorSearch').value = '';
+  document.getElementById('advisorResults').innerHTML = '<p class="initial-text">Enter your problem or issue above to find relevant articles and solutions.</p>';
+}
+
+function displaySearchResults(results, query) {
+  const resultsDiv = document.getElementById('advisorResults');
+  
+  if (!query) {
+    resultsDiv.innerHTML = '<p class="initial-text">Enter your problem or issue above to find relevant articles and solutions.</p>';
+    return;
+  }
+  
+  if (results.length === 0) {
+    resultsDiv.innerHTML = '<p class="no-results">No matching articles found. Try different keywords.</p>';
+    return;
+  }
+
+  function highlightText(text, searchTerms) {
+    let highlighted = text;
+    searchTerms.forEach(term => {
+      if (term.length < 3) return;
+      const regex = new RegExp(`(${term})`, 'gi');
+      highlighted = highlighted.replace(regex, '<span class="highlight">$1</span>');
+    });
+    return highlighted;
+  }
+
+  const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+  
+  let html = `<div class="search-stats">Found ${results.length} matching article${results.length === 1 ? '' : 's'}</div>`;
+  
+  results.forEach(article => {
+    html += `
+      <article class="search-result">
+        <h3>Article ${article.articleNumber}: ${highlightText(article.title, searchTerms)}</h3>
+        <p><strong>Summary:</strong> ${highlightText(article.summary, searchTerms)}</p>
+        <p><strong>Solution:</strong> ${highlightText(article.solution, searchTerms)}</p>
+      </article>
+    `;
+  });
+  
+  resultsDiv.innerHTML = html;
+}
+
+function handleLogout() {
+  loggedInUser = null;
+  loggedInPolice = null;
+  
+  // Hide navbar
+  document.getElementById('mainNavbar').style.display = 'none';
+  
+  // Show auth nav
+  document.querySelector('.auth-nav').style.display = 'flex';
+  
+  // Show login section and hide others
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+  });
+  document.getElementById('userLoginSection').classList.add('active');
+}
+
+function handleUserLogin(event) {
+  event.preventDefault();
+  const username = document.getElementById('userLoginUsername').value;
+  const password = document.getElementById('userLoginPassword').value;
+  
+  if (username && password) {
+    loggedInUser = { username };
+    
+    // Hide auth buttons
+    document.querySelector('.auth-nav').style.display = 'none';
+    
+    // Show navbar
+    document.getElementById('mainNavbar').style.display = 'block';
+    
+    // Show home section
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('active');
+    });
+    document.getElementById('home-section').classList.add('active');
+    
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('onclick').includes('home-section')) {
+        link.classList.add('active');
+      }
+    });
+    
+    // Clear the form
+    event.target.reset();
+  } else {
+    alert('Please enter both username and password');
+  }
+  return false;
+}
+
+function handleUserSignup(event) {
+  event.preventDefault();
+  const username = document.getElementById('userSignupUsername').value;
+  const password = document.getElementById('userSignupPassword').value;
+  const confirmPassword = document.getElementById('userSignupConfirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  // Simple validation for demo
+  if (username && password) {
+    loggedInUser = { username };
+    document.getElementById('mainNavbar').style.display = '';
+    showSection('home-section');
+  } else {
+    alert('Please fill all fields');
+  }
+}
+
+function handlePoliceLogin(event) {
+  event.preventDefault();
+  const policeId = document.getElementById('policeLoginID').value;
+  const password = document.getElementById('policeLoginPassword').value;
+  
+  if (policeId && password) {
+    loggedInPolice = { policeId };
+    
+    // Hide auth buttons
+    document.querySelector('.auth-nav').style.display = 'none';
+    
+    // Show navbar
+    document.getElementById('mainNavbar').style.display = 'block';
+    
+    // Load and display reports
+    loadPoliceReports();
+    
+    // Navigate to police dashboard
+    navigateTo('policeDashboardSection');
+  } else {
+    alert('Please enter both Police ID and password');
+  }
+  return false;
+}
+
+function handlePoliceSignup(event) {
+  event.preventDefault();
+  const policeId = document.getElementById('policeSignupID').value;
+  const name = document.getElementById('policeSignupName').value;
+  const password = document.getElementById('policeSignupPassword').value;
+  const confirmPassword = document.getElementById('policeSignupConfirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  // Simple validation for demo
+  if (policeId && name && password) {
+    loggedInUser = { policeId, name, isPolice: true };
+    document.getElementById('mainNavbar').style.display = '';
+    showSection('home-section');
+  } else {
+    alert('Please fill all fields');
+  }
+}
+
+function handleLogout() {
+  // Reset user state
+  loggedInUser = null;
+  loggedInPolice = null;
+
+  // Hide navbar
+  document.getElementById('mainNavbar').style.display = 'none';
+
+  // Clear any forms
+  document.querySelectorAll('form').forEach(form => form.reset());
+
+  // Show login section
+  showSection('userLoginSection');
+
+  // Show auth buttons
+  document.querySelectorAll('.auth-btn').forEach(btn => btn.style.display = '');
+
+  // Reset any active states
+  document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+  document.querySelector('.nav-link[data-section="home-section"]').classList.add('active');
+}
+
+const alarmText = document.getElementById('alarmText');
+const policeAlarmAudio = document.getElementById('policeAlarmAudio');
+
+// Articles data is defined at the top of the file
+constitutionArticles = [
+  {
+    articleNumber: 1,
+    title: "Article 1 - Name and territory of the Union",
+    summary: "India, that is Bharat, shall be a Union of States. The territory of India shall comprise the territories of the States, the Union territories and any territory that may be acquired.",
+    solution: "This article establishes India's federal structure and territorial sovereignty. For issues related to state boundaries or territorial disputes, refer to the appropriate state authorities or the Ministry of Home Affairs."
+  },
+  {
+    articleNumber: 2,
+    title: "Article 2 - Admission or establishment of new States",
+    summary: "Parliament may by law admit into the Union, or establish, new States on such terms and conditions as it thinks fit.",
+    solution: "For matters related to state formation or reorganization, petitions must be filed through the State Legislature or Parliament."
+  },
+  {
+    articleNumber: 3,
+    title: "Article 3 - Formation of new States and alteration of areas, boundaries or names of existing States",
+    summary: "Parliament may form a new State by separation of territory from any State or by uniting two or more States or parts of States or by uniting any territory to a part of any State.",
+    solution: "Issues regarding state boundaries or names should be addressed through State Legislature and require Presidential reference."
+  },
+  {
+    articleNumber: 12,
+    title: "Article 12 - Definition of State",
+    summary: "The State includes the Government and Parliament of India, the Government and Legislature of each State, and all local or other authorities within India or under the control of the Government of India.",
+    solution: "For grievances against state authorities, approach the appropriate administrative tribunal or court of law."
+  },
+  {
+    articleNumber: 14,
+    title: "Article 14 - Equality before law",
+    summary: "The State shall not deny to any person equality before the law or the equal protection of the laws within the territory of India.",
+    solution: "Cases of discrimination can be addressed through filing a writ petition in the High Court or Supreme Court under Article 226 or 32 respectively."
+  },
+  {
+    articleNumber: 15,
+    title: "Article 15 - Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth",
+    summary: "The State shall not discriminate against any citizen on grounds only of religion, race, caste, sex, place of birth or any of them.",
+    solution: "File a complaint with the National Human Rights Commission or relevant State Human Rights Commission for discrimination cases."
+  },
+  {
+    articleNumber: 16,
+    title: "Article 16 - Equality of opportunity in matters of public employment",
+    summary: "There shall be equality of opportunity for all citizens in matters relating to employment or appointment to any office under the State.",
+    solution: "Employment discrimination cases can be addressed through the Administrative Tribunal or Labor Court."
+  },
+  {
+    articleNumber: 19,
+    title: "Article 19 - Protection of certain rights regarding freedom of speech, etc.",
+    summary: "All citizens shall have the right to freedom of speech and expression, assembly, association, movement, residence, and profession.",
+    solution: "Violations of fundamental rights can be addressed through writ petitions in High Courts or the Supreme Court."
+  },
+  {
+    articleNumber: 20,
+    title: "Article 20 - Protection in respect of conviction for offenses",
+    summary: "No person shall be convicted of any offense except for violation of law in force, or be subjected to greater penalty, or be prosecuted and punished twice for the same offense.",
+    solution: "For cases of double jeopardy or ex-post-facto laws, seek legal counsel and file appropriate petitions in court."
+  },
+  {
+    articleNumber: 21,
+    title: "Article 21 - Protection of life and personal liberty",
+    summary: "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+    solution: "File a habeas corpus petition in case of illegal detention or approach NHRC for human rights violations."
+  },
+  {
+    articleNumber: 21,
+    title: "Article 21A - Right to Education",
+    summary: "The State shall provide free and compulsory education to all children between the age of six and fourteen years.",
+    solution: "Violations can be reported to the State Education Department or file PIL in High Court."
+  },
+  {
+    articleNumber: 22,
+    title: "Article 22 - Protection against arrest and detention",
+    summary: "No person shall be detained in custody without being informed of the grounds for arrest nor shall be denied the right to consult and be defended by a legal practitioner of their choice.",
+    solution: "File a habeas corpus petition or approach Legal Services Authority for free legal aid."
+  },
+  {
+    articleNumber: 23,
+    title: "Article 23 - Prohibition of traffic in human beings and forced labor",
+    summary: "Traffic in human beings and forced labor are prohibited and any contravention of this provision shall be an offense punishable in accordance with law.",
+    solution: "Report to Anti-Human Trafficking Unit or contact National Human Rights Commission."
+  },
+  {
+    articleNumber: 24,
+    title: "Article 24 - Prohibition of employment of children in factories, etc.",
+    summary: "No child below the age of fourteen years shall be employed to work in any factory or mine or engaged in any other hazardous employment.",
+    solution: "Report child labor to Child Labor Prevention Cell or call Childline at 1098."
+  },
+  {
+    articleNumber: 25,
+    title: "Article 25 - Freedom of conscience and religion",
+    summary: "All persons are equally entitled to freedom of conscience and the right freely to profess, practice and propagate religion.",
+    solution: "Religious discrimination cases can be reported to State Minorities Commission or file writ petition."
+  },
+  {
+    articleNumber: 26,
+    title: "Article 26 - Freedom to manage religious affairs",
+    summary: "Every religious denomination has the right to establish and maintain institutions for religious and charitable purposes.",
+    solution: "Approach State Religious Endowments Department or file case in appropriate court."
+  },
+  {
+    articleNumber: 27,
+    title: "Article 27 - Freedom from taxation for promotion of religion",
+    summary: "No person shall be compelled to pay any taxes for the promotion or maintenance of any particular religion or religious denomination.",
+    solution: "File writ petition in High Court challenging unconstitutional religious taxation."
+  },
+  {
+    articleNumber: 28,
+    title: "Article 28 - Freedom of attendance at religious instruction",
+    summary: "No religious instruction shall be provided in educational institutions wholly maintained out of State funds.",
+    solution: "Report violations to State Education Department or file PIL."
+  },
+  {
+    articleNumber: 29,
+    title: "Article 29 - Protection of interests of minorities",
+    summary: "Any section of citizens having a distinct language, script or culture has the right to conserve the same.",
+    solution: "Approach Minorities Commission or file representation to Ministry of Minority Affairs."
+  },
+  {
+    articleNumber: 30,
+    title: "Article 30 - Right of minorities to establish educational institutions",
+    summary: "All minorities have the right to establish and administer educational institutions of their choice.",
+    solution: "Contact National Commission for Minority Educational Institutions for grievances."
+  },
+  {
+    articleNumber: 32,
+    title: "Article 32 - Right to Constitutional Remedies",
+    summary: "The right to move the Supreme Court by appropriate proceedings for the enforcement of fundamental rights is guaranteed.",
+    solution: "File writ petition in Supreme Court for violation of fundamental rights."
+  },
+  {
+    articleNumber: 38,
+    title: "Article 38 - State to secure a social order for the promotion of welfare of the people",
+    summary: "The State shall strive to promote the welfare of the people by securing and protecting a social order based on social, economic and political justice.",
+    solution: "Approach relevant government departments or file PIL for implementation of welfare schemes."
+  },
+  {
+    articleNumber: 39,
+    title: "Article 39 - Certain principles of policy to be followed by the State",
+    summary: "The State shall direct its policy towards securing adequate means of livelihood, equal pay for equal work, and protection of children and workers.",
+    solution: "File complaints with Labor Department or approach appropriate commission."
+  },
+  {
+    articleNumber: 40,
+    title: "Article 40 - Organization of village panchayats",
+    summary: "The State shall take steps to organize village panchayats and endow them with necessary powers to function as units of self-government.",
+    solution: "Contact State Election Commission or Rural Development Department for panchayat issues."
+  },
+  {
+    articleNumber: 41,
+    title: "Article 41 - Right to work, education and public assistance",
+    summary: "The State shall make effective provision for securing the right to work, education, and public assistance in cases of unemployment, old age, sickness, and disablement.",
+    solution: "Approach Social Welfare Department or file representation for implementation of welfare schemes."
+  },
+  {
+    articleNumber: 42,
+    title: "Article 42 - Provision for just and humane conditions of work",
+    summary: "The State shall make provision for securing just and humane conditions of work and for maternity relief.",
+    solution: "Report violations to Labor Department or file case in Labor Court."
+  },
+  {
+    articleNumber: 43,
+    title: "Article 43 - Living wage for workers",
+    summary: "The State shall endeavor to secure a living wage and decent standard of life for all workers.",
+    solution: "File complaint with Labor Commissioner or approach Trade Union."
+  },
+  {
+    articleNumber: 44,
+    title: "Article 44 - Uniform civil code",
+    summary: "The State shall endeavor to secure for citizens a uniform civil code throughout the territory of India.",
+    solution: "Approach Law Commission or file PIL for implementation."
+  },
+  {
+    articleNumber: 45,
+    title: "Article 45 - Early childhood care and education",
+    summary: "The State shall endeavor to provide early childhood care and education for all children until they complete the age of six years.",
+    solution: "Contact State Education Department or Women & Child Development Department."
+  },
+  {
+    articleNumber: 46,
+    title: "Article 46 - Promotion of educational and economic interests of weaker sections",
+    summary: "The State shall promote with special care the educational and economic interests of the weaker sections, particularly SC/STs.",
+    solution: "Approach SC/ST Commission or Social Welfare Department."
+  },
+  {
+    articleNumber: 47,
+    title: "Article 47 - Duty of the State to raise the level of nutrition",
+    summary: "The State shall regard the raising of the level of nutrition and the standard of living as among its primary duties.",
+    solution: "Contact Food & Civil Supplies Department or file PIL for implementation of nutrition schemes."
+  },
+  {
+    articleNumber: 48,
+    title: "Article 48 - Organization of agriculture and animal husbandry",
+    summary: "The State shall endeavor to organize agriculture and animal husbandry on modern and scientific lines.",
+    solution: "Approach Agriculture Department or Animal Husbandry Department."
+  },
+  {
+    articleNumber: 49,
+    title: "Article 49 - Protection of monuments",
+    summary: "The State shall protect every monument or place or object of artistic or historic interest from spoliation, disfigurement, destruction, removal, disposal or export.",
+    solution: "Report to Archaeological Survey of India or State Archaeology Department."
+  },
+  {
+    articleNumber: 50,
+    title: "Article 50 - Separation of judiciary from executive",
+    summary: "The State shall take steps to separate the judiciary from the executive in the public services of the State.",
+    solution: "File PIL for implementation or approach Law Commission."
+  },
+  {
+    articleNumber: 51,
+    title: "Article 51 - Promotion of international peace and security",
+    summary: "The State shall endeavor to promote international peace and security, maintain just and honorable relations between nations.",
+    solution: "Contact Ministry of External Affairs for international relations issues."
+  },
+  {
+    articleNumber: "51A",
+    title: "Article 51A - Fundamental Duties",
+    summary: "It shall be the duty of every citizen of India to abide by the Constitution, promote harmony, protect environment, and develop scientific temper.",
+    solution: "Citizens can participate in awareness programs and contribute to nation-building activities."
+  },
+  {
+    articleNumber: 52,
+    title: "Article 52 - The President of India",
+    summary: "There shall be a President of India who shall be the head of the State and supreme commander of defense forces.",
+    solution: "Constitutional matters regarding President can be addressed through Supreme Court."
+  },
+  {
+    articleNumber: 53,
+    title: "Article 53 - Executive power of the Union",
+    summary: "The executive power of the Union shall be vested in the President and shall be exercised by him directly or through officers subordinate to him.",
+    solution: "Administrative issues can be addressed through proper government channels."
+  },
+  {
+    articleNumber: 54,
+    title: "Article 54 - Election of President",
+    summary: "The President shall be elected by members of an electoral college consisting of elected members of Parliament and State Legislatures.",
+    solution: "Election-related disputes to be addressed to Election Commission of India."
+  },
+  {
+    articleNumber: 61,
+    title: "Article 61 - Procedure for impeachment of the President",
+    summary: "The President can be impeached for violation of the Constitution by Parliament following prescribed procedure.",
+    solution: "Constitutional procedures must be followed through Parliament."
+  },
+  {
+    articleNumber: 72,
+    title: "Article 72 - Power of President to grant pardons",
+    summary: "The President has the power to grant pardons, reprieves, respites or remissions of punishment in certain cases.",
+    solution: "Mercy petitions can be filed through proper channels to President's Secretariat."
+  },
+  {
+    articleNumber: 74,
+    title: "Article 74 - Council of Ministers to aid and advise President",
+    summary: "There shall be a Council of Ministers with the Prime Minister at the head to aid and advise the President.",
+    solution: "Governance issues can be raised through Parliament or appropriate ministries."
+  },
+  {
+    articleNumber: 76,
+    title: "Article 76 - Attorney General for India",
+    summary: "The President shall appoint a person qualified to be a Supreme Court judge as Attorney General for India.",
+    solution: "Legal opinions can be sought through proper government channels."
+  },
+  {
+    articleNumber: 80,
+    title: "Article 80 - Composition of the Council of States",
+    summary: "The Council of States (Rajya Sabha) shall consist of 250 members, with 12 nominated by the President.",
+    solution: "Parliamentary matters can be raised through MPs or Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 81,
+    title: "Article 81 - Composition of the House of the People",
+    summary: "The House of the People (Lok Sabha) shall have maximum 552 members directly elected by people.",
+    solution: "Electoral issues can be addressed to Election Commission of India."
+  },
+  {
+    articleNumber: 85,
+    title: "Article 85 - Sessions of Parliament",
+    summary: "The President shall summon each House of Parliament to meet at such time and place as he thinks fit.",
+    solution: "Parliamentary affairs can be addressed through MPs or Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 86,
+    title: "Article 86 - Right of President to address Houses",
+    summary: "The President may address either House of Parliament or both Houses assembled together.",
+    solution: "Presidential communications are handled through proper parliamentary channels."
+  },
+  {
+    articleNumber: 95,
+    title: "Article 95 - Power of Deputy Speaker",
+    summary: "While the office of Speaker is vacant, the duties of the office shall be performed by the Deputy Speaker.",
+    solution: "Parliamentary procedure issues can be raised through proper channels."
+  },
+  {
+    articleNumber: 100,
+    title: "Article 100 - Voting in Houses",
+    summary: "All questions in Parliament shall be determined by a majority of votes of the members present and voting.",
+    solution: "Parliamentary voting procedures are handled through Lok Sabha/Rajya Sabha secretariats."
+  },
+  {
+    articleNumber: 101,
+    title: "Article 101 - Vacation of seats in Parliament",
+    summary: "Specifies conditions under which parliamentary seats are vacated, including dual membership.",
+    solution: "Electoral matters to be addressed to Election Commission of India."
+  },
+  {
+    articleNumber: 102,
+    title: "Article 102 - Disqualifications for membership",
+    summary: "Lists grounds for disqualification of MPs, including holding office of profit.",
+    solution: "Disqualification matters handled by President on EC's advice."
+  },
+  {
+    articleNumber: 103,
+    title: "Article 103 - Decision on disqualification of members",
+    summary: "President decides on MP disqualification in consultation with Election Commission.",
+    solution: "Submit representations to President's Secretariat."
+  },
+  {
+    articleNumber: 104,
+    title: "Article 104 - Penalty for sitting when disqualified",
+    summary: "Penalties for sitting and voting when disqualified as MP.",
+    solution: "Report violations to Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 105,
+    title: "Article 105 - Powers and privileges of Parliament",
+    summary: "Defines powers, privileges, and immunities of Parliament and its members.",
+    solution: "Parliamentary privilege issues handled by respective House committees."
+  },
+  {
+    articleNumber: 106,
+    title: "Article 106 - Salaries and allowances of members",
+    summary: "Parliament determines salaries and allowances of MPs by law.",
+    solution: "Salary matters handled by Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 107,
+    title: "Article 107 - Provisions as to introduction of Bills",
+    summary: "Procedures for introduction and passing of Bills in Parliament.",
+    solution: "Legislative procedures through Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 108,
+    title: "Article 108 - Joint sitting of both Houses",
+    summary: "Procedure for joint session of Parliament in case of deadlock.",
+    solution: "Joint session matters through respective House secretariats."
+  },
+  {
+    articleNumber: 109,
+    title: "Article 109 - Special procedure for Money Bills",
+    summary: "Special provisions for Money Bills in Parliament.",
+    solution: "Financial bills through Ministry of Finance."
+  },
+  {
+    articleNumber: 110,
+    title: "Article 110 - Definition of Money Bills",
+    summary: "Defines what constitutes a Money Bill in Parliament.",
+    solution: "Classification queries to Lok Sabha Speaker."
+  },
+  {
+    articleNumber: 111,
+    title: "Article 111 - Assent to Bills",
+    summary: "President's assent to Bills passed by Parliament.",
+    solution: "Bill status through Parliamentary Affairs Ministry."
+  },
+  {
+    articleNumber: 112,
+    title: "Article 112 - Annual financial statement",
+    summary: "Presentation of annual Union Budget to Parliament.",
+    solution: "Budget matters through Ministry of Finance."
+  },
+  {
+    articleNumber: 113,
+    title: "Article 113 - Procedure in Parliament with respect to estimates",
+    summary: "Parliamentary procedure for budget estimates.",
+    solution: "Budget procedures through Finance Ministry."
+  },
+  {
+    articleNumber: 114,
+    title: "Article 114 - Appropriation Bills",
+    summary: "Procedure for Appropriation Bills in Parliament.",
+    solution: "Appropriation matters through Finance Ministry."
+  },
+  {
+    articleNumber: 115,
+    title: "Article 115 - Supplementary grants",
+    summary: "Provisions for supplementary, additional or excess grants.",
+    solution: "Additional grants through Finance Ministry."
+  },
+  {
+    articleNumber: 116,
+    title: "Article 116 - Votes on account",
+    summary: "Provisions for advance grants pending budget approval.",
+    solution: "Vote on account through Finance Ministry."
+  },
+  {
+    articleNumber: 117,
+    title: "Article 117 - Special provisions for Financial Bills",
+    summary: "Special procedures for Financial Bills in Parliament.",
+    solution: "Financial legislation through Finance Ministry."
+  },
+  {
+    articleNumber: 118,
+    title: "Article 118 - Rules of procedure",
+    summary: "Houses of Parliament may make rules for their procedure.",
+    solution: "Procedural matters through House secretariats."
+  },
+  {
+    articleNumber: 119,
+    title: "Article 119 - Regulation of procedure in Parliament",
+    summary: "Parliament may regulate its procedure in relation to financial business.",
+    solution: "Financial procedures through House secretariats."
+  },
+  {
+    articleNumber: 120,
+    title: "Article 120 - Language in Parliament",
+    summary: "Hindi or English to be used in Parliament.",
+    solution: "Language issues through Parliamentary Affairs."
+  },
+  {
+    articleNumber: 121,
+    title: "Article 121 - Restriction on discussion in Parliament",
+    summary: "Restricts discussion on conduct of judges in Parliament.",
+    solution: "Judicial conduct matters through proper legal channels."
+  },
+  {
+    articleNumber: 122,
+    title: "Article 122 - Courts not to inquire into proceedings",
+    summary: "Courts cannot question validity of parliamentary proceedings.",
+    solution: "Parliamentary privilege matters through House committees."
+  },
+  {
+    articleNumber: 123,
+    title: "Article 123 - Power of President to promulgate Ordinances",
+    summary: "President can issue ordinances when Parliament is not in session.",
+    solution: "Ordinance-related matters through Ministry of Law."
+  },
+  {
+    articleNumber: 124,
+    title: "Article 124 - Establishment of Supreme Court",
+    summary: "Constitution and appointment of Supreme Court judges.",
+    solution: "Judicial appointments through Collegium system."
+  },
+  {
+    articleNumber: 125,
+    title: "Article 125 - Salaries of Supreme Court judges",
+    summary: "Salaries and allowances of Supreme Court judges.",
+    solution: "Judicial compensation through Law Ministry."
+  },
+  {
+    articleNumber: 126,
+    title: "Article 126 - Appointment of acting Chief Justice",
+    summary: "Provisions for appointment of acting Chief Justice.",
+    solution: "Judicial administration through Supreme Court Registry."
+  },
+  {
+    articleNumber: 127,
+    title: "Article 127 - Appointment of ad hoc judges",
+    summary: "Appointment of temporary judges to Supreme Court.",
+    solution: "Temporary appointments through Chief Justice."
+  },
+  {
+    articleNumber: 128,
+    title: "Article 128 - Attendance of retired judges",
+    summary: "Retired judges may sit in Supreme Court.",
+    solution: "Judicial assignments through Supreme Court Registry."
+  },
+  {
+    articleNumber: 129,
+    title: "Article 129 - Supreme Court as court of record",
+    summary: "Supreme Court is a court of record with power to punish contempt.",
+    solution: "Contempt matters through Supreme Court Registry."
+  },
+  {
+    articleNumber: 130,
+    title: "Article 130 - Seat of Supreme Court",
+    summary: "Supreme Court seat in Delhi with possible other locations.",
+    solution: "Court location matters through Law Ministry."
+  },
+  {
+    articleNumber: 131,
+    title: "Article 131 - Original jurisdiction of Supreme Court",
+    summary: "Supreme Court's original jurisdiction in federal disputes.",
+    solution: "Federal disputes through proper legal representation."
+  },
+  {
+    articleNumber: 132,
+    title: "Article 132 - Appellate jurisdiction in constitutional matters",
+    summary: "Supreme Court's appellate jurisdiction in constitutional cases.",
+    solution: "Constitutional appeals through proper legal channels."
+  },
+  {
+    articleNumber: 133,
+    title: "Article 133 - Appellate jurisdiction in civil matters",
+    summary: "Supreme Court's appellate jurisdiction in civil cases.",
+    solution: "Civil appeals through proper legal representation."
+  },
+  {
+    articleNumber: 134,
+    title: "Article 134 - Appellate jurisdiction in criminal matters",
+    summary: "Supreme Court's appellate jurisdiction in criminal cases.",
+    solution: "Criminal appeals through proper legal channels."
+  },
+  {
+    articleNumber: 135,
+    title: "Article 135 - Jurisdiction of Federal Court",
+    summary: "Supreme Court's jurisdiction over Federal Court matters.",
+    solution: "Federal matters through Supreme Court Registry."
+  },
+  {
+    articleNumber: 136,
+    title: "Article 136 - Special leave to appeal",
+    summary: "Supreme Court's power to grant special leave to appeal.",
+    solution: "SLP matters through proper legal representation."
+  },
+  {
+    articleNumber: 137,
+    title: "Article 137 - Review of judgments by Supreme Court",
+    summary: "Supreme Court's power to review its judgments.",
+    solution: "Review petitions through Supreme Court Registry."
+  },
+  {
+    articleNumber: 138,
+    title: "Article 138 - Enlargement of jurisdiction",
+    summary: "Parliament may extend Supreme Court's jurisdiction.",
+    solution: "Jurisdiction matters through Law Ministry."
+  },
+  {
+    articleNumber: 139,
+    title: "Article 139 - Conferment of rights to issue writs",
+    summary: "Parliament may empower Supreme Court to issue writs.",
+    solution: "Writ matters through proper legal channels."
+  },
+  {
+    articleNumber: 140,
+    title: "Article 140 - Ancillary powers of Supreme Court",
+    summary: "Parliament may confer supplementary powers on Supreme Court.",
+    solution: "Court powers through Law Ministry."
+  },
+  {
+    articleNumber: 141,
+    title: "Article 141 - Law declared by Supreme Court binding",
+    summary: "Law declared by Supreme Court binding on all courts in India.",
+    solution: "Legal precedents through proper court citations."
+  },
+  {
+    articleNumber: 142,
+    title: "Article 142 - Enforcement of decrees and orders",
+    summary: "Supreme Court's power to do complete justice.",
+    solution: "Order enforcement through proper legal channels."
+  },
+  {
+    articleNumber: 143,
+    title: "Article 143 - Power of President to consult Supreme Court",
+    summary: "President may seek Supreme Court's opinion on questions of law.",
+    solution: "Presidential references through Law Ministry."
+  },
+  {
+    articleNumber: 144,
+    title: "Article 144 - Civil and judicial authorities to act in aid of Supreme Court",
+    summary: "All authorities must assist Supreme Court.",
+    solution: "Compliance matters through proper authorities."
+  },
+  {
+    articleNumber: 145,
+    title: "Article 145 - Rules of Court",
+    summary: "Supreme Court may make rules for practice and procedure.",
+    solution: "Court rules through Supreme Court Registry."
+  },
+  {
+    articleNumber: 146,
+    title: "Article 146 - Officers and servants of Supreme Court",
+    summary: "Appointments and service conditions of Supreme Court staff.",
+    solution: "Staff matters through Supreme Court Registry."
+  },
+  {
+    articleNumber: 147,
+    title: "Article 147 - Interpretation",
+    summary: "Interpretation of Supreme Court related provisions.",
+    solution: "Constitutional interpretation through proper legal channels."
+  },
+  {
+    articleNumber: 148,
+    title: "Article 148 - Comptroller and Auditor-General",
+    summary: "Appointment and duties of CAG of India.",
+    solution: "Audit matters through CAG office."
+  },
+  {
+    articleNumber: 149,
+    title: "Article 149 - Duties and powers of CAG",
+    summary: "CAG's duties and powers regarding public accounts.",
+    solution: "Audit issues through CAG office."
+  },
+  {
+    articleNumber: 150,
+    title: "Article 150 - Form of accounts",
+    summary: "Form of accounts of Union and States prescribed by President.",
+    solution: "Account formats through Finance Ministry."
+  },
+  {
+    articleNumber: 151,
+    title: "Article 151 - Audit reports",
+    summary: "CAG's reports to President and Governors.",
+    solution: "Audit reports through proper channels."
+  },
+  {
+    articleNumber: 152,
+    title: "Article 152 - Definition",
+    summary: "Definitions for State Government provisions.",
+    solution: "State matters through proper authorities."
+  },
+  {
+    articleNumber: 153,
+    title: "Article 153 - Governors of States",
+    summary: "Each State to have a Governor appointed by President.",
+    solution: "Governor matters through President's office."
+  },
+  {
+    articleNumber: 154,
+    title: "Article 154 - Executive power of State",
+    summary: "Executive power of State vested in Governor.",
+    solution: "State executive matters through proper channels."
+  },
+  {
+    articleNumber: 155,
+    title: "Article 155 - Appointment of Governor",
+    summary: "Governor appointed by President by warrant.",
+    solution: "Governor appointments through President's office."
+  },
+  {
+    articleNumber: 156,
+    title: "Article 156 - Term of office of Governor",
+    summary: "Governor's term and removal provisions.",
+    solution: "Governor's term through President's office."
+  },
+  {
+    articleNumber: 157,
+    title: "Article 157 - Qualifications for Governor",
+    summary: "Qualifications required for appointment as Governor.",
+    solution: "Governor qualifications through proper channels."
+  },
+  {
+    articleNumber: 158,
+    title: "Article 158 - Conditions of Governor's office",
+    summary: "Conditions and restrictions on Governor's office.",
+    solution: "Governor conditions through President's office."
+  },
+  {
+    articleNumber: 159,
+    title: "Article 159 - Oath by Governor",
+    summary: "Oath or affirmation by Governor.",
+    solution: "Governor's oath through proper protocol."
+  },
+  {
+    articleNumber: 160,
+    title: "Article 160 - Discharge of Governor's functions",
+    summary: "Provisions for discharge of Governor's functions.",
+    solution: "Governor's functions through proper channels."
+  },
+  {
+    articleNumber: 161,
+    title: "Article 161 - Power of Governor to grant pardons",
+    summary: "Governor's power to grant pardons and remit sentences.",
+    solution: "Pardon applications through Governor's office."
+  },
+  {
+    articleNumber: 162,
+    title: "Article 162 - Extent of executive power of State",
+    summary: "Executive power of State extends to matters under State List.",
+    solution: "State executive matters through proper departments."
+  },
+  {
+    articleNumber: 163,
+    title: "Article 163 - Council of Ministers to aid Governor",
+    summary: "Council of Ministers with Chief Minister to aid Governor.",
+    solution: "State governance through proper channels."
+  },
+  {
+    articleNumber: 164,
+    title: "Article 164 - Other provisions as to Ministers",
+    summary: "Appointment and terms of State Ministers.",
+    solution: "Ministerial matters through proper protocol."
+  },
+  {
+    articleNumber: 165,
+    title: "Article 165 - Advocate-General for State",
+    summary: "Appointment and duties of State Advocate-General.",
+    solution: "Legal matters through AG's office."
+  },
+  {
+    articleNumber: 166,
+    title: "Article 166 - Conduct of Government Business",
+    summary: "Rules for conduct of State Government business.",
+    solution: "Government business through proper departments."
+  },
+  {
+    articleNumber: 167,
+    title: "Article 167 - Duties of Chief Minister",
+    summary: "Chief Minister's duties regarding administration.",
+    solution: "State administration through CM's office."
+  },
+  {
+    articleNumber: 168,
+    title: "Article 168 - Constitution of Legislatures",
+    summary: "Constitution of State Legislatures.",
+    solution: "Legislative matters through proper channels."
+  },
+  {
+    articleNumber: 169,
+    title: "Article 169 - Abolition of Legislative Councils",
+    summary: "Parliament's power to abolish Legislative Councils.",
+    solution: "Council matters through Parliament."
+  },
+  {
+    articleNumber: 170,
+    title: "Article 170 - Composition of Legislative Assemblies",
+    summary: "Composition and strength of State Assemblies.",
+    solution: "Assembly matters through Election Commission."
+  },
+  {
+    articleNumber: 171,
+    title: "Article 171 - Composition of Legislative Councils",
+    summary: "Composition of State Legislative Councils.",
+    solution: "Council composition through proper channels."
+  },
+  {
+    articleNumber: 172,
+    title: "Article 172 - Duration of State Legislatures",
+    summary: "Term of State Legislative Assembly.",
+    solution: "Assembly term through Election Commission."
+  },
+  {
+    articleNumber: 173,
+    title: "Article 173 - Qualification for membership",
+    summary: "Qualifications for State Legislature membership.",
+    solution: "Membership matters through Election Commission."
+  },
+  {
+    articleNumber: 174,
+    title: "Article 174 - Sessions of State Legislature",
+    summary: "Governor's power to summon and prorogue Legislature.",
+    solution: "Legislative sessions through proper channels."
+  },
+  {
+    articleNumber: 175,
+    title: "Article 175 - Right of Governor to address",
+    summary: "Governor's right to address Legislature.",
+    solution: "Governor's address through proper protocol."
+  },
+  {
+    articleNumber: 176,
+    title: "Article 176 - Special address by Governor",
+    summary: "Governor's special address to Legislature.",
+    solution: "Special address through proper channels."
+  },
+  {
+    articleNumber: 177,
+    title: "Article 177 - Rights of Ministers",
+    summary: "Ministers' rights in State Legislature.",
+    solution: "Ministerial rights through proper protocol."
+  },
+  {
+    articleNumber: 178,
+    title: "Article 178 - The Speaker and Deputy Speaker",
+    summary: "Assembly Speaker and Deputy Speaker provisions.",
+    solution: "Speaker matters through Assembly secretariat."
+  },
+  {
+    articleNumber: 179,
+    title: "Article 179 - Vacation of offices",
+    summary: "Vacation of Speaker and Deputy Speaker offices.",
+    solution: "Office vacation through proper channels."
+  },
+  {
+    articleNumber: 180,
+    title: "Article 180 - Power of Deputy Speaker",
+    summary: "Deputy Speaker's powers when presiding.",
+    solution: "Deputy Speaker matters through Assembly."
+  },
+  {
+    articleNumber: 181,
+    title: "Article 181 - Deputy Speaker when presiding",
+    summary: "Deputy Speaker's powers and privileges when presiding.",
+    solution: "Assembly matters through proper channels."
+  },
+  {
+    articleNumber: 182,
+    title: "Article 182 - Chairman and Deputy Chairman",
+    summary: "Legislative Council Chairman and Deputy Chairman.",
+    solution: "Council matters through proper channels."
+  },
+  {
+    articleNumber: 183,
+    title: "Article 183 - Vacation of offices",
+    summary: "Vacation of Chairman and Deputy Chairman offices.",
+    solution: "Council office matters through proper protocol."
+  },
+  {
+    articleNumber: 184,
+    title: "Article 184 - Power of Deputy Chairman",
+    summary: "Deputy Chairman's powers when presiding.",
+    solution: "Council matters through proper channels."
+  },
+  {
+    articleNumber: 185,
+    title: "Article 185 - Deputy Chairman when presiding",
+    summary: "Deputy Chairman's powers and privileges when presiding.",
+    solution: "Council procedures through proper channels."
+  },
+  {
+    articleNumber: 186,
+    title: "Article 186 - Salaries and allowances",
+    summary: "Salaries of Legislative officers.",
+    solution: "Salary matters through Legislature secretariat."
+  },
+  {
+    articleNumber: 187,
+    title: "Article 187 - Secretariat of State Legislature",
+    summary: "Separate secretariat for State Legislature.",
+    solution: "Secretariat matters through proper channels."
+  },
+  {
+    articleNumber: 188,
+    title: "Article 188 - Oath or affirmation",
+    summary: "Oath taking by Legislature members.",
+    solution: "Oath matters through proper protocol."
+  },
+  {
+    articleNumber: 189,
+    title: "Article 189 - Voting in Houses",
+    summary: "Voting procedures in State Legislature.",
+    solution: "Voting matters through proper channels."
+  },
+  {
+    articleNumber: 190,
+    title: "Article 190 - Vacation of seats",
+    summary: "Provisions for vacation of seats in Legislature.",
+    solution: "Seat vacation through proper protocol."
+  },
+  {
+    articleNumber: 191,
+    title: "Article 191 - Disqualifications for membership",
+    summary: "Grounds for disqualification of Legislature members.",
+    solution: "Disqualification matters through proper channels."
+  },
+  {
+    articleNumber: 192,
+    title: "Article 192 - Decision on disqualification",
+    summary: "Governor's decision on member disqualification.",
+    solution: "Disqualification decisions through Governor's office."
+  },
+  {
+    articleNumber: 193,
+    title: "Article 193 - Penalty for sitting when disqualified",
+    summary: "Penalty for sitting and voting when disqualified.",
+    solution: "Penalties through proper legal channels."
+  },
+  {
+    articleNumber: 194,
+    title: "Article 194 - Powers and privileges of Houses",
+    summary: "Powers and privileges of State Legislature.",
+    solution: "Legislative privileges through proper channels."
+  },
+  {
+    articleNumber: 195,
+    title: "Article 195 - Salaries and allowances of members",
+    summary: "Legislature members' salaries and allowances.",
+    solution: "Salary matters through Legislature secretariat."
+  },
+  {
+    articleNumber: 196,
+    title: "Article 196 - Legislative procedure",
+    summary: "Provisions for passing Bills in State Legislature.",
+    solution: "Legislative procedures through proper channels."
+  },
+  {
+    articleNumber: 197,
+    title: "Article 197 - Restriction on powers of Council",
+    summary: "Legislative Council's restricted powers on Money Bills.",
+    solution: "Council matters through proper channels."
+  },
+  {
+    articleNumber: 198,
+    title: "Article 198 - Special procedure for Money Bills",
+    summary: "Special procedure for Money Bills in State Legislature.",
+    solution: "Money Bills through proper channels."
+  },
+  {
+    articleNumber: 199,
+    title: "Article 199 - Definition of Money Bills",
+    summary: "Definition and scope of Money Bills in States.",
+    solution: "Money Bill matters through proper channels."
+  },
+  {
+    articleNumber: 200,
+    title: "Article 200 - Assent to Bills",
+    summary: "Governor's assent to State Legislature Bills.",
+    solution: "Bill assent through Governor's office."
+  },
+  {
+    articleNumber: 201,
+    title: "Article 201 - Bills reserved for consideration",
+    summary: "Governor may reserve Bills for President's consideration.",
+    solution: "Reserved Bills through proper channels."
+  },
+  {
+    articleNumber: 202,
+    title: "Article 202 - Annual financial statement",
+    summary: "Annual budget presentation in State Legislature.",
+    solution: "Budget matters through Finance Department."
+  },
+  {
+    articleNumber: 203,
+    title: "Article 203 - Procedure in Legislature",
+    summary: "Procedure for dealing with budget in Legislature.",
+    solution: "Budget procedures through proper channels."
+  },
+  {
+    articleNumber: 204,
+    title: "Article 204 - Appropriation Bills",
+    summary: "Procedure for Appropriation Bills in States.",
+    solution: "Appropriation matters through Finance Department."
+  },
+  {
+    articleNumber: 205,
+    title: "Article 205 - Supplementary grants",
+    summary: "Procedure for supplementary or additional grants.",
+    solution: "Additional grants through proper channels."
+  },
+  {
+    articleNumber: 206,
+    title: "Article 206 - Votes on account",
+    summary: "Provisions for advance grants in States.",
+    solution: "Advance grants through Finance Department."
+  },
+  {
+    articleNumber: 207,
+    title: "Article 207 - Special provisions for Financial Bills",
+    summary: "Special procedures for Financial Bills in States.",
+    solution: "Financial Bills through proper channels."
+  },
+  {
+    articleNumber: 208,
+    title: "Article 208 - Rules of procedure",
+    summary: "Legislature's power to make procedural rules.",
+    solution: "Procedural matters through Legislature secretariat."
+  },
+  {
+    articleNumber: 209,
+    title: "Article 209 - Regulation of procedure",
+    summary: "Regulation of Legislature's financial procedures.",
+    solution: "Financial procedures through proper channels."
+  },
+  {
+    articleNumber: 210,
+    title: "Article 210 - Language in Legislature",
+    summary: "Language to be used in State Legislature.",
+    solution: "Language matters through proper channels."
+  },
+  {
+    articleNumber: 211,
+    title: "Article 211 - Restriction on discussion",
+    summary: "Restrictions on discussing judicial conduct.",
+    solution: "Discussion matters through proper channels."
+  },
+  {
+    articleNumber: 212,
+    title: "Article 212 - Courts not to inquire into proceedings",
+    summary: "Courts' non-interference in legislative proceedings.",
+    solution: "Legislative privilege matters through proper channels."
+  },
+  {
+    articleNumber: 213,
+    title: "Article 213 - Power of Governor to promulgate Ordinances",
+    summary: "Governor's power to issue Ordinances.",
+    solution: "Ordinance matters through Governor's office."
+  },
+  {
+    articleNumber: 214,
+    title: "Article 214 - High Courts for States",
+    summary: "High Court for each State.",
+    solution: "High Court matters through proper judicial channels."
+  },
+  {
+    articleNumber: 215,
+    title: "Article 215 - High Courts to be courts of record",
+    summary: "High Courts as courts of record with contempt power.",
+    solution: "High Court matters through Registry."
+  },
+  {
+    articleNumber: 216,
+    title: "Article 216 - Constitution of High Courts",
+    summary: "Composition and judges of High Courts.",
+    solution: "High Court composition through proper channels."
+  },
+  {
+    articleNumber: 217,
+    title: "Article 217 - Appointment of High Court Judges",
+    summary: "Appointment and terms of High Court Judges.",
+    solution: "Judicial appointments through Collegium system."
+  },
+  {
+    articleNumber: 218,
+    title: "Article 218 - Application of certain provisions",
+    summary: "Application of Supreme Court provisions to High Courts.",
+    solution: "High Court matters through proper channels."
+  },
+  {
+    articleNumber: 219,
+    title: "Article 219 - Oath by High Court Judges",
+    summary: "Oath or affirmation by High Court Judges.",
+    solution: "Judicial oath through proper protocol."
+  },
+  {
+    articleNumber: 220,
+    title: "Article 220 - Restriction on practice after being Judge",
+    summary: "Restrictions on practice after being High Court Judge.",
+    solution: "Post-retirement practice through Bar Council."
+  },
+  {
+    articleNumber: 221,
+    title: "Article 221 - Salaries of High Court Judges",
+    summary: "Salaries and allowances of High Court Judges.",
+    solution: "Judicial compensation through Law Ministry."
+  },
+  {
+    articleNumber: 222,
+    title: "Article 222 - Transfer of Judges",
+    summary: "Transfer of High Court Judges between States.",
+    solution: "Judicial transfers through Collegium system."
+  },
+  {
+    articleNumber: 223,
+    title: "Article 223 - Acting Chief Justice",
+    summary: "Appointment of acting Chief Justice of High Court.",
+    solution: "Acting appointments through proper channels."
+  },
+  {
+    articleNumber: 224,
+    title: "Article 224 - Additional and Acting Judges",
+    summary: "Appointment of additional and acting High Court Judges.",
+    solution: "Additional appointments through Collegium."
+  },
+  {
+    articleNumber: 225,
+    title: "Article 225 - Jurisdiction of High Courts",
+    summary: "Jurisdiction and powers of existing High Courts.",
+    solution: "Jurisdictional matters through proper channels."
+  },
+  {
+    articleNumber: 226,
+    title: "Article 226 - Power to issue writs",
+    summary: "High Courts' power to issue writs for fundamental rights.",
+    solution: "Writ petitions through High Court Registry."
+  },
+  {
+    articleNumber: 227,
+    title: "Article 227 - Power of superintendence",
+    summary: "High Court's power of superintendence over subordinate courts.",
+    solution: "Supervisory matters through proper channels."
+  },
+  {
+    articleNumber: 228,
+    title: "Article 228 - Transfer of cases to High Court",
+    summary: "Transfer of constitutional cases to High Court.",
+    solution: "Case transfers through proper legal channels."
+  },
+  {
+    articleNumber: 229,
+    title: "Article 229 - Officers of High Courts",
+    summary: "Officers and servants of High Courts.",
+    solution: "Staff matters through High Court Registry."
+  },
+  {
+    articleNumber: 230,
+    title: "Article 230 - Extension of jurisdiction",
+    summary: "Extension of High Courts' jurisdiction to Union territories.",
+    solution: "Jurisdictional matters through Law Ministry."
+  },
+  {
+    articleNumber: 231,
+    title: "Article 231 - Establishment of common High Court",
+    summary: "Common High Court for two or more States.",
+    solution: "High Court establishment through proper channels."
+  },
+  {
+    articleNumber: 232,
+    title: "Article 232 - Interpretation",
+    summary: "Interpretation of High Court provisions.",
+    solution: "Legal interpretation through proper channels."
+  },
+  {
+    articleNumber: 233,
+    title: "Article 233 - Appointment of district judges",
+    summary: "Appointment of district judges in States.",
+    solution: "Judicial appointments through High Court."
+  },
+  {
+    articleNumber: 234,
+    title: "Article 234 - Recruitment of subordinate judges",
+    summary: "Recruitment of persons other than district judges.",
+    solution: "Recruitment through Public Service Commission."
+  },
+  {
+    articleNumber: 235,
+    title: "Article 235 - Control over subordinate courts",
+    summary: "High Court's control over subordinate courts.",
+    solution: "Administrative control through High Court."
+  },
+  {
+    articleNumber: 236,
+    title: "Article 236 - Interpretation",
+    summary: "Interpretation of provisions about subordinate courts.",
+    solution: "Legal interpretation through proper channels."
+  },
+  {
+    articleNumber: 237,
+    title: "Article 237 - Application of provisions",
+    summary: "Application of provisions to magistrates.",
+    solution: "Magisterial matters through proper channels."
+  },
+  {
+    articleNumber: 238,
+    title: "Article 238 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 239,
+    title: "Article 239 - Administration of Union territories",
+    summary: "Administration of Union territories by President.",
+    solution: "UT administration through proper channels."
+  },
+  {
+    articleNumber: 240,
+    title: "Article 240 - Power to make regulations",
+    summary: "President's power to make regulations for Union territories.",
+    solution: "UT regulations through proper channels."
+  },
+  {
+    articleNumber: 241,
+    title: "Article 241 - High Courts for Union territories",
+    summary: "High Courts for Union territories.",
+    solution: "UT judiciary through proper channels."
+  },
+  {
+    articleNumber: 242,
+    title: "Article 242 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 243,
+    title: "Article 243 - Definitions",
+    summary: "Definitions related to Panchayats.",
+    solution: "Panchayat matters through Rural Development Ministry."
+  },
+  {
+    articleNumber: "243A",
+    title: "Article 243A - Gram Sabha",
+    summary: "Powers and functions of Gram Sabha.",
+    solution: "Village governance through Panchayat Raj Department."
+  },
+  {
+    articleNumber: "243B",
+    title: "Article 243B - Constitution of Panchayats",
+    summary: "Three-tier system of Panchayats.",
+    solution: "Panchayat structure through proper channels."
+  },
+  {
+    articleNumber: "243C",
+    title: "Article 243C - Composition of Panchayats",
+    summary: "Composition of different levels of Panchayats.",
+    solution: "Panchayat composition through proper channels."
+  },
+  {
+    articleNumber: "243D",
+    title: "Article 243D - Reservation of seats",
+    summary: "Reservation in Panchayats for SC/ST and women.",
+    solution: "Reservation matters through proper channels."
+  },
+  {
+    articleNumber: "243E",
+    title: "Article 243E - Duration of Panchayats",
+    summary: "Five-year term for Panchayats.",
+    solution: "Term matters through State Election Commission."
+  },
+  {
+    articleNumber: "243F",
+    title: "Article 243F - Disqualifications",
+    summary: "Disqualifications for Panchayat membership.",
+    solution: "Disqualification through proper channels."
+  },
+  {
+    articleNumber: "243G",
+    title: "Article 243G - Powers of Panchayats",
+    summary: "Powers and responsibilities of Panchayats.",
+    solution: "Panchayat powers through proper channels."
+  },
+  {
+    articleNumber: "243H",
+    title: "Article 243H - Panchayat finances",
+    summary: "Financial powers and authority of Panchayats.",
+    solution: "Financial matters through proper channels."
+  },
+  {
+    articleNumber: "243I",
+    title: "Article 243I - Finance Commission",
+    summary: "State Finance Commission for Panchayats.",
+    solution: "Finance matters through proper channels."
+  },
+  {
+    articleNumber: "243J",
+    title: "Article 243J - Audit of accounts",
+    summary: "Audit of Panchayat accounts.",
+    solution: "Audit matters through proper channels."
+  },
+  {
+    articleNumber: "243K",
+    title: "Article 243K - Elections to Panchayats",
+    summary: "State Election Commission for Panchayats.",
+    solution: "Elections through State Election Commission."
+  },
+  {
+    articleNumber: "243L",
+    title: "Article 243L - Application to Union territories",
+    summary: "Application of Panchayat provisions to UTs.",
+    solution: "UT Panchayats through proper channels."
+  },
+  {
+    articleNumber: "243M",
+    title: "Article 243M - Exempted areas",
+    summary: "Areas exempted from Panchayat provisions.",
+    solution: "Exemption matters through proper channels."
+  },
+  {
+    articleNumber: "243N",
+    title: "Article 243N - Continuance of existing laws",
+    summary: "Continuation of existing Panchayat laws.",
+    solution: "Legal matters through proper channels."
+  },
+  {
+    articleNumber: "243O",
+    title: "Article 243O - Bar to interference by courts",
+    summary: "Bar on court interference in electoral matters.",
+    solution: "Electoral disputes through Election Commission."
+  },
+  {
+    articleNumber: "243P",
+    title: "Article 243P - Definitions for Municipalities",
+    summary: "Definitions related to Municipalities.",
+    solution: "Municipal matters through Urban Development."
+  },
+  {
+    articleNumber: "243Q",
+    title: "Article 243Q - Constitution of Municipalities",
+    summary: "Different types of Municipalities.",
+    solution: "Municipal constitution through proper channels."
+  },
+  {
+    articleNumber: "243R",
+    title: "Article 243R - Composition of Municipalities",
+    summary: "Composition of Municipal bodies.",
+    solution: "Municipal composition through proper channels."
+  },
+  {
+    articleNumber: "243S",
+    title: "Article 243S - Ward Committees",
+    summary: "Constitution of Ward Committees.",
+    solution: "Ward matters through Municipal authorities."
+  },
+  {
+    articleNumber: "243T",
+    title: "Article 243T - Reservation of seats",
+    summary: "Reservation in Municipalities for SC/ST and women.",
+    solution: "Reservation through proper channels."
+  },
+  {
+    articleNumber: "243U",
+    title: "Article 243U - Duration of Municipalities",
+    summary: "Five-year term for Municipalities.",
+    solution: "Term matters through State Election Commission."
+  },
+  {
+    articleNumber: "243V",
+    title: "Article 243V - Disqualifications",
+    summary: "Disqualifications for Municipal membership.",
+    solution: "Disqualification through proper channels."
+  },
+  {
+    articleNumber: "243W",
+    title: "Article 243W - Powers of Municipalities",
+    summary: "Powers and responsibilities of Municipalities.",
+    solution: "Municipal powers through proper channels."
+  },
+  {
+    articleNumber: "243X",
+    title: "Article 243X - Municipal finances",
+    summary: "Financial powers of Municipalities.",
+    solution: "Financial matters through proper channels."
+  },
+  {
+    articleNumber: "243Y",
+    title: "Article 243Y - Finance Commission",
+    summary: "Finance Commission for Municipalities.",
+    solution: "Finance matters through proper channels."
+  },
+  {
+    articleNumber: "243Z",
+    title: "Article 243Z - Audit of accounts",
+    summary: "Audit of Municipal accounts.",
+    solution: "Audit matters through proper channels."
+  },
+  {
+    articleNumber: "243ZA",
+    title: "Article 243ZA - Elections to Municipalities",
+    summary: "Municipal elections by State Election Commission.",
+    solution: "Elections through State Election Commission."
+  },
+  {
+    articleNumber: "243ZB",
+    title: "Article 243ZB - Application to Union territories",
+    summary: "Application of Municipal provisions to UTs.",
+    solution: "UT Municipalities through proper channels."
+  },
+  {
+    articleNumber: "243ZC",
+    title: "Article 243ZC - Exempted areas",
+    summary: "Areas exempted from Municipal provisions.",
+    solution: "Exemption matters through proper channels."
+  },
+  {
+    articleNumber: "243ZD",
+    title: "Article 243ZD - District Planning Committee",
+    summary: "Constitution of District Planning Committees.",
+    solution: "Planning matters through proper channels."
+  },
+  {
+    articleNumber: "243ZE",
+    title: "Article 243ZE - Metropolitan Planning Committee",
+    summary: "Constitution of Metropolitan Planning Committees.",
+    solution: "Metro planning through proper channels."
+  },
+  {
+    articleNumber: "243ZF",
+    title: "Article 243ZF - Continuance of existing laws",
+    summary: "Continuation of existing Municipal laws.",
+    solution: "Legal matters through proper channels."
+  },
+  {
+    articleNumber: "243ZG",
+    title: "Article 243ZG - Bar to interference by courts",
+    summary: "Bar on court interference in electoral matters.",
+    solution: "Electoral disputes through Election Commission."
+  },
+  {
+    articleNumber: 244,
+    title: "Article 244 - Administration of Scheduled Areas",
+    summary: "Special provisions for Scheduled and Tribal Areas.",
+    solution: "Tribal matters through Ministry of Tribal Affairs."
+  },
+  {
+    articleNumber: "244A",
+    title: "Article 244A - Formation of autonomous State",
+    summary: "Formation of autonomous State in Assam.",
+    solution: "Autonomy matters through proper channels."
+  },
+  {
+    articleNumber: 245,
+    title: "Article 245 - Extent of laws",
+    summary: "Territorial extent of laws made by Parliament.",
+    solution: "Legislative matters through proper channels."
+  },
+  {
+    articleNumber: 246,
+    title: "Article 246 - Subject matter of laws",
+    summary: "Distribution of legislative powers between Union and States.",
+    solution: "Legislative powers through proper channels."
+  },
+  {
+    articleNumber: "246A",
+    title: "Article 246A - GST related provisions",
+    summary: "Special provisions for Goods and Services Tax.",
+    solution: "GST matters through proper tax authorities."
+  },
+  {
+    articleNumber: 247,
+    title: "Article 247 - Additional courts",
+    summary: "Parliament's power to establish additional courts.",
+    solution: "Judicial matters through Law Ministry."
+  },
+  {
+    articleNumber: 248,
+    title: "Article 248 - Residuary powers",
+    summary: "Parliament's residuary powers of legislation.",
+    solution: "Legislative matters through proper channels."
+  },
+  {
+    articleNumber: 249,
+    title: "Article 249 - Power of Parliament",
+    summary: "Parliament's power to legislate on State subjects.",
+    solution: "Legislative matters through proper channels."
+  },
+  {
+    articleNumber: 250,
+    title: "Article 250 - Emergency powers",
+    summary: "Parliament's power during Emergency.",
+    solution: "Emergency legislation through proper channels."
+  },
+  {
+    articleNumber: 251,
+    title: "Article 251 - Inconsistency in laws",
+    summary: "Inconsistency between Union and State laws.",
+    solution: "Legal conflicts through proper channels."
+  },
+  {
+    articleNumber: 252,
+    title: "Article 252 - Power of Parliament",
+    summary: "Parliament's power to legislate for two or more States.",
+    solution: "Inter-state matters through proper channels."
+  },
+  {
+    articleNumber: 253,
+    title: "Article 253 - International agreements",
+    summary: "Legislation to implement international agreements.",
+    solution: "International matters through MEA."
+  },
+  {
+    articleNumber: 254,
+    title: "Article 254 - Inconsistency in laws",
+    summary: "Inconsistency between Union and State laws.",
+    solution: "Legal conflicts through proper channels."
+  },
+  {
+    articleNumber: 255,
+    title: "Article 255 - Requirements for validity",
+    summary: "Requirements for certain laws to be valid.",
+    solution: "Legal validity through proper channels."
+  },
+  {
+    articleNumber: 256,
+    title: "Article 256 - State compliance",
+    summary: "Obligation of States to comply with Union laws.",
+    solution: "Compliance matters through proper channels."
+  },
+  {
+    articleNumber: 257,
+    title: "Article 257 - Control over States",
+    summary: "Union's power to give directions to States.",
+    solution: "State directions through proper channels."
+  },
+  {
+    articleNumber: 258,
+    title: "Article 258 - Delegation of powers",
+    summary: "Power of Union to confer powers on States.",
+    solution: "Power delegation through proper channels."
+  },
+  {
+    articleNumber: 259,
+    title: "Article 259 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 260,
+    title: "Article 260 - Jurisdiction of Union",
+    summary: "Jurisdiction of Union in relation to territories outside India.",
+    solution: "External matters through MEA."
+  },
+  {
+    articleNumber: 261,
+    title: "Article 261 - Public acts and records",
+    summary: "Full faith and credit to public acts and records.",
+    solution: "Public records through proper channels."
+  },
+  {
+    articleNumber: 262,
+    title: "Article 262 - Inter-State water disputes",
+    summary: "Adjudication of disputes relating to waters.",
+    solution: "Water disputes through Water Resources Ministry."
+  },
+  {
+    articleNumber: 263,
+    title: "Article 263 - Inter-State Council",
+    summary: "Provisions for Inter-State Council.",
+    solution: "Inter-state coordination through proper channels."
+  },
+  {
+    articleNumber: 264,
+    title: "Article 264 - Interpretation",
+    summary: "Interpretation of financial provisions.",
+    solution: "Financial interpretation through Finance Ministry."
+  },
+  {
+    articleNumber: 265,
+    title: "Article 265 - Taxes by law",
+    summary: "No tax shall be levied except by authority of law.",
+    solution: "Tax matters through proper authorities."
+  },
+  {
+    articleNumber: 266,
+    title: "Article 266 - Consolidated Funds",
+    summary: "Consolidated Funds and Public Accounts of India and States.",
+    solution: "Public funds through Finance Ministry."
+  },
+  {
+    articleNumber: 267,
+    title: "Article 267 - Contingency Fund",
+    summary: "Contingency Fund of India and States.",
+    solution: "Emergency funds through Finance Ministry."
+  },
+  {
+    articleNumber: 268,
+    title: "Article 268 - Duties levied by Union",
+    summary: "Duties levied by Union but collected by States.",
+    solution: "Tax collection through proper authorities."
+  },
+  {
+    articleNumber: "268A",
+    title: "Article 268A - [Omitted]",
+    summary: "Article omitted by Constitution (101st Amendment) Act, 2016.",
+    solution: "Historical reference through proper channels."
+  },
+  {
+    articleNumber: 269,
+    title: "Article 269 - Taxes levied and collected by Union",
+    summary: "Taxes levied and collected by Union but assigned to States.",
+    solution: "Tax assignment through proper channels."
+  },
+  {
+    articleNumber: "269A",
+    title: "Article 269A - GST on inter-State trade",
+    summary: "Goods and Services Tax on inter-State supplies.",
+    solution: "GST matters through proper authorities."
+  },
+  {
+    articleNumber: 270,
+    title: "Article 270 - Taxes levied and distributed",
+    summary: "Taxes levied and distributed between Union and States.",
+    solution: "Tax distribution through Finance Commission."
+  },
+  {
+    articleNumber: 271,
+    title: "Article 271 - Surcharge on taxes",
+    summary: "Union's power to levy surcharge on taxes.",
+    solution: "Surcharge matters through Finance Ministry."
+  },
+  {
+    articleNumber: 272,
+    title: "Article 272 - [Repealed]",
+    summary: "Article repealed by Constitution (80th Amendment) Act, 2000.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 273,
+    title: "Article 273 - Jute export duty",
+    summary: "Grants in lieu of export duty on jute.",
+    solution: "Export duty through proper channels."
+  },
+  {
+    articleNumber: 274,
+    title: "Article 274 - Prior recommendation for Bills",
+    summary: "President's recommendation for certain financial Bills.",
+    solution: "Financial Bills through proper channels."
+  },
+  {
+    articleNumber: 275,
+    title: "Article 275 - Grants from Union",
+    summary: "Grants from Union to certain States.",
+    solution: "State grants through Finance Ministry."
+  },
+  {
+    articleNumber: 276,
+    title: "Article 276 - Taxes on professions",
+    summary: "Taxes on professions, trades, callings and employments.",
+    solution: "Professional tax through proper channels."
+  },
+  {
+    articleNumber: 277,
+    title: "Article 277 - Existing taxes",
+    summary: "Savings of existing taxes.",
+    solution: "Tax matters through proper authorities."
+  },
+  {
+    articleNumber: 278,
+    title: "Article 278 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 279,
+    title: "Article 279 - Net proceeds calculation",
+    summary: "Calculation of net proceeds of taxes.",
+    solution: "Tax calculation through Finance Ministry."
+  },
+  {
+    articleNumber: "279A",
+    title: "Article 279A - GST Council",
+    summary: "Goods and Services Tax Council.",
+    solution: "GST matters through GST Council."
+  },
+  {
+    articleNumber: 280,
+    title: "Article 280 - Finance Commission",
+    summary: "Finance Commission for financial relations.",
+    solution: "Financial matters through Finance Commission."
+  },
+  {
+    articleNumber: 281,
+    title: "Article 281 - Finance Commission recommendations",
+    summary: "Recommendations of Finance Commission.",
+    solution: "Financial recommendations through proper channels."
+  },
+  {
+    articleNumber: 282,
+    title: "Article 282 - Union or State expenditure",
+    summary: "Expenditure for any public purpose.",
+    solution: "Public expenditure through proper channels."
+  },
+  {
+    articleNumber: 283,
+    title: "Article 283 - Custody of funds",
+    summary: "Custody and withdrawal of Consolidated Fund money.",
+    solution: "Fund management through Finance Ministry."
+  },
+  {
+    articleNumber: 284,
+    title: "Article 284 - Public Account custody",
+    summary: "Custody of Public Account money.",
+    solution: "Account management through proper channels."
+  },
+  {
+    articleNumber: 285,
+    title: "Article 285 - Property exemption",
+    summary: "Exemption of Union property from State taxation.",
+    solution: "Tax exemption through proper channels."
+  },
+  {
+    articleNumber: 286,
+    title: "Article 286 - Sales tax restrictions",
+    summary: "Restrictions on imposition of tax on sale of goods.",
+    solution: "Sales tax matters through proper channels."
+  },
+  {
+    articleNumber: 287,
+    title: "Article 287 - Electricity exemption",
+    summary: "Exemption from electricity duty.",
+    solution: "Electricity matters through proper channels."
+  },
+  {
+    articleNumber: 288,
+    title: "Article 288 - Water/electricity taxation",
+    summary: "Exemption from taxation on water or electricity.",
+    solution: "Utility taxation through proper channels."
+  },
+  {
+    articleNumber: 289,
+    title: "Article 289 - State property exemption",
+    summary: "Exemption of State property from Union taxation.",
+    solution: "Tax exemption through proper channels."
+  },
+  {
+    articleNumber: 290,
+    title: "Article 290 - Privy purse adjustment",
+    summary: "Adjustment of certain expenses and pensions.",
+    solution: "Pension matters through proper channels."
+  },
+  {
+    articleNumber: "290A",
+    title: "Article 290A - Annual payment to temples",
+    summary: "Annual payment to certain Devaswom Funds.",
+    solution: "Religious matters through proper channels."
+  },
+  {
+    articleNumber: 291,
+    title: "Article 291 - [Repealed]",
+    summary: "Article repealed by Constitution (26th Amendment) Act, 1971.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 292,
+    title: "Article 292 - Union borrowing",
+    summary: "Borrowing by Government of India.",
+    solution: "Borrowing matters through Finance Ministry."
+  },
+  {
+    articleNumber: 293,
+    title: "Article 293 - State borrowing",
+    summary: "Borrowing by States.",
+    solution: "State borrowing through proper channels."
+  },
+  {
+    articleNumber: 294,
+    title: "Article 294 - Property succession",
+    summary: "Succession to property, assets, and liabilities.",
+    solution: "Property matters through proper channels."
+  },
+  {
+    articleNumber: 295,
+    title: "Article 295 - Property succession",
+    summary: "Succession to property not covered by Article 294.",
+    solution: "Property matters through proper channels."
+  },
+  {
+    articleNumber: 296,
+    title: "Article 296 - Ownerless property",
+    summary: "Property accruing by escheat or lapse.",
+    solution: "Property matters through proper channels."
+  },
+  {
+    articleNumber: 297,
+    title: "Article 297 - Maritime property",
+    summary: "Things of value within territorial waters.",
+    solution: "Maritime matters through proper channels."
+  },
+  {
+    articleNumber: 298,
+    title: "Article 298 - Government contracts",
+    summary: "Power to carry on trade by Government.",
+    solution: "Trade matters through proper channels."
+  },
+  {
+    articleNumber: 299,
+    title: "Article 299 - Government contracts",
+    summary: "Contracts by Union or State Governments.",
+    solution: "Contract matters through proper channels."
+  },
+  {
+    articleNumber: 300,
+    title: "Article 300 - Legal proceedings",
+    summary: "Suits and proceedings by or against Government.",
+    solution: "Legal matters through proper channels."
+  },
+  {
+    articleNumber: "300A",
+    title: "Article 300A - Right to property",
+    summary: "Persons not to be deprived of property save by law.",
+    solution: "Property rights through proper legal channels."
+  },
+  {
+    articleNumber: 301,
+    title: "Article 301 - Freedom of trade",
+    summary: "Freedom of trade, commerce and intercourse.",
+    solution: "Trade matters through proper channels."
+  },
+  {
+    articleNumber: 302,
+    title: "Article 302 - Trade restrictions",
+    summary: "Parliament's power to impose trade restrictions.",
+    solution: "Trade restrictions through proper channels."
+  },
+  {
+    articleNumber: 303,
+    title: "Article 303 - Trade discrimination",
+    summary: "Restrictions on trade discrimination between States.",
+    solution: "Trade regulation through proper channels."
+  },
+  {
+    articleNumber: 304,
+    title: "Article 304 - Trade restrictions by States",
+    summary: "State's power to impose trade restrictions.",
+    solution: "State trade matters through proper channels."
+  },
+  {
+    articleNumber: 305,
+    title: "Article 305 - Existing laws",
+    summary: "Saving of existing laws and State monopolies.",
+    solution: "Legal matters through proper channels."
+  },
+  {
+    articleNumber: 306,
+    title: "Article 306 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 307,
+    title: "Article 307 - Appointment of authority",
+    summary: "Appointment of authority for trade matters.",
+    solution: "Trade authority through proper channels."
+  },
+  {
+    articleNumber: 308,
+    title: "Article 308 - Interpretation",
+    summary: "Interpretation of service provisions.",
+    solution: "Service matters through proper channels."
+  },
+  {
+    articleNumber: 309,
+    title: "Article 309 - Public services",
+    summary: "Recruitment and conditions of service of public servants.",
+    solution: "Service matters through proper authorities."
+  },
+  {
+    articleNumber: 310,
+    title: "Article 310 - Tenure of office",
+    summary: "Tenure of office of public servants.",
+    solution: "Service tenure through proper channels."
+  },
+  {
+    articleNumber: 311,
+    title: "Article 311 - Dismissal of civil servants",
+    summary: "Dismissal, removal or reduction in rank of civil servants.",
+    solution: "Service matters through proper authorities."
+  },
+  {
+    articleNumber: 312,
+    title: "Article 312 - All-India Services",
+    summary: "All-India Services common to Union and States.",
+    solution: "Service matters through UPSC."
+  },
+  {
+    articleNumber: "312A",
+    title: "Article 312A - Power of Parliament",
+    summary: "Power of Parliament to vary or revoke conditions of service.",
+    solution: "Service conditions through proper channels."
+  },
+  {
+    articleNumber: 313,
+    title: "Article 313 - Transitional provisions",
+    summary: "Transitional provisions for public services.",
+    solution: "Service transition through proper channels."
+  },
+  {
+    articleNumber: 314,
+    title: "Article 314 - [Repealed]",
+    summary: "Article repealed by Constitution (28th Amendment) Act, 1972.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 315,
+    title: "Article 315 - Public Service Commission",
+    summary: "Union and State Public Service Commissions.",
+    solution: "Service matters through PSC."
+  },
+  {
+    articleNumber: 316,
+    title: "Article 316 - PSC appointment",
+    summary: "Appointment and term of office of PSC members.",
+    solution: "PSC matters through proper channels."
+  },
+  {
+    articleNumber: 317,
+    title: "Article 317 - Removal of PSC members",
+    summary: "Removal and suspension of PSC members.",
+    solution: "PSC matters through proper authorities."
+  },
+  {
+    articleNumber: 318,
+    title: "Article 318 - PSC regulations",
+    summary: "Power to make regulations for PSC conditions of service.",
+    solution: "PSC regulations through proper channels."
+  },
+  {
+    articleNumber: 319,
+    title: "Article 319 - PSC member prohibition",
+    summary: "Prohibition on holding office after PSC membership.",
+    solution: "PSC matters through proper channels."
+  },
+  {
+    articleNumber: 320,
+    title: "Article 320 - PSC functions",
+    summary: "Functions of Public Service Commissions.",
+    solution: "PSC functions through proper channels."
+  },
+  {
+    articleNumber: 321,
+    title: "Article 321 - PSC extended functions",
+    summary: "Power to extend functions of PSC.",
+    solution: "PSC matters through proper authorities."
+  },
+  {
+    articleNumber: 322,
+    title: "Article 322 - PSC expenses",
+    summary: "Expenses of Public Service Commissions.",
+    solution: "PSC expenses through proper channels."
+  },
+  {
+    articleNumber: 323,
+    title: "Article 323 - PSC reports",
+    summary: "Reports of Public Service Commissions.",
+    solution: "PSC reports through proper channels."
+  },
+  {
+    articleNumber: "323A",
+    title: "Article 323A - Administrative tribunals",
+    summary: "Administrative tribunals for public service matters.",
+    solution: "Service disputes through tribunals."
+  },
+  {
+    articleNumber: "323B",
+    title: "Article 323B - Other tribunals",
+    summary: "Tribunals for other matters.",
+    solution: "Disputes through appropriate tribunals."
+  },
+  {
+    articleNumber: 324,
+    title: "Article 324 - Election Commission",
+    summary: "Superintendence of elections by Election Commission.",
+    solution: "Electoral matters through EC."
+  },
+  {
+    articleNumber: 325,
+    title: "Article 325 - Electoral rolls",
+    summary: "No person to be excluded from electoral rolls on grounds of religion, race, caste or sex.",
+    solution: "Electoral matters through EC."
+  },
+  {
+    articleNumber: 326,
+    title: "Article 326 - Adult suffrage",
+    summary: "Elections on the basis of adult suffrage.",
+    solution: "Voting rights through EC."
+  },
+  {
+    articleNumber: 327,
+    title: "Article 327 - Election laws",
+    summary: "Power of Parliament to make election laws.",
+    solution: "Electoral laws through proper channels."
+  },
+  {
+    articleNumber: 328,
+    title: "Article 328 - State election laws",
+    summary: "Power of Legislature to make election laws for State.",
+    solution: "State elections through proper channels."
+  },
+  {
+    articleNumber: 329,
+    title: "Article 329 - Election disputes",
+    summary: "Bar to interference by courts in electoral matters.",
+    solution: "Electoral disputes through EC."
+  },
+  {
+    articleNumber: "329A",
+    title: "Article 329A - [Repealed]",
+    summary: "Article repealed by Constitution (44th Amendment) Act, 1978.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 330,
+    title: "Article 330 - Reserved seats",
+    summary: "Reservation of seats for SC/ST in House of People.",
+    solution: "Reservation matters through EC."
+  },
+  {
+    articleNumber: 331,
+    title: "Article 331 - Anglo-Indian representation",
+    summary: "Representation of Anglo-Indian community.",
+    solution: "Representation through proper channels."
+  },
+  {
+    articleNumber: 332,
+    title: "Article 332 - State Assembly reservation",
+    summary: "Reservation of seats for SC/ST in State Assemblies.",
+    solution: "State reservation through EC."
+  },
+  {
+    articleNumber: 333,
+    title: "Article 333 - Anglo-Indian nomination",
+    summary: "Representation of Anglo-Indians in State Assemblies.",
+    solution: "State representation through proper channels."
+  },
+  {
+    articleNumber: 334,
+    title: "Article 334 - Reservation period",
+    summary: "Reservation of seats and special representation to cease after certain period.",
+    solution: "Reservation period through proper channels."
+  },
+  {
+    articleNumber: 335,
+    title: "Article 335 - SC/ST claims",
+    summary: "Claims of SC/ST to services and posts.",
+    solution: "Service matters through proper channels."
+  },
+  {
+    articleNumber: 336,
+    title: "Article 336 - Anglo-Indian services",
+    summary: "Special provision for Anglo-Indian community in services.",
+    solution: "Service matters through proper channels."
+  },
+  {
+    articleNumber: 337,
+    title: "Article 337 - Educational grants",
+    summary: "Special provision for educational grants for Anglo-Indian community.",
+    solution: "Educational matters through proper channels."
+  },
+  {
+    articleNumber: 338,
+    title: "Article 338 - SC/ST Commission",
+    summary: "National Commission for Scheduled Castes.",
+    solution: "SC matters through NCSC."
+  },
+  {
+    articleNumber: "338A",
+    title: "Article 338A - ST Commission",
+    summary: "National Commission for Scheduled Tribes.",
+    solution: "ST matters through NCST."
+  },
+  {
+    articleNumber: "338B",
+    title: "Article 338B - Backward Classes Commission",
+    summary: "National Commission for Backward Classes.",
+    solution: "BC matters through NCBC."
+  },
+  {
+    articleNumber: 339,
+    title: "Article 339 - Scheduled Areas control",
+    summary: "Control of Union over administration of Scheduled Areas.",
+    solution: "Tribal matters through proper channels."
+  },
+  {
+    articleNumber: 340,
+    title: "Article 340 - Backward Classes Commission",
+    summary: "Appointment of Commission to investigate conditions of backward classes.",
+    solution: "BC matters through proper channels."
+  },
+  {
+    articleNumber: 341,
+    title: "Article 341 - Scheduled Castes",
+    summary: "Power to declare certain castes as Scheduled Castes.",
+    solution: "SC specification through proper channels."
+  },
+  {
+    articleNumber: 342,
+    title: "Article 342 - Scheduled Tribes",
+    summary: "Power to declare certain tribes as Scheduled Tribes.",
+    solution: "ST specification through proper channels."
+  },
+  {
+    articleNumber: "342A",
+    title: "Article 342A - Socially and Educationally Backward Classes",
+    summary: "Power to specify socially and educationally backward classes.",
+    solution: "SEBC specification through proper channels."
+  },
+  {
+    articleNumber: 343,
+    title: "Article 343 - Official language",
+    summary: "Official language of the Union.",
+    solution: "Language matters through proper channels."
+  },
+  {
+    articleNumber: 344,
+    title: "Article 344 - Language Commission",
+    summary: "Commission and Committee of Parliament on official language.",
+    solution: "Language matters through proper channels."
+  },
+  {
+    articleNumber: 345,
+    title: "Article 345 - State language",
+    summary: "Official language or languages of a State.",
+    solution: "State language through proper channels."
+  },
+  {
+    articleNumber: 346,
+    title: "Article 346 - Official language",
+    summary: "Official language for communication between States.",
+    solution: "Inter-state communication through proper channels."
+  },
+  {
+    articleNumber: 347,
+    title: "Article 347 - Special language provisions",
+    summary: "Special provision for language spoken by substantial population.",
+    solution: "Language matters through proper channels."
+  },
+  {
+    articleNumber: 348,
+    title: "Article 348 - Language in courts",
+    summary: "Language to be used in Supreme Court and High Courts.",
+    solution: "Court language through proper channels."
+  },
+  {
+    articleNumber: 349,
+    title: "Article 349 - Language legislation",
+    summary: "Special procedure for enacting certain language laws.",
+    solution: "Language laws through proper channels."
+  },
+  {
+    articleNumber: 350,
+    title: "Article 350 - Language of representation",
+    summary: "Language for representation of grievances.",
+    solution: "Grievance language through proper channels."
+  },
+  {
+    articleNumber: "350A",
+    title: "Article 350A - Primary education",
+    summary: "Facilities for instruction in mother-tongue.",
+    solution: "Educational matters through proper channels."
+  },
+  {
+    articleNumber: "350B",
+    title: "Article 350B - Language Commissioner",
+    summary: "Special Officer for linguistic minorities.",
+    solution: "Minority matters through proper channels."
+  },
+  {
+    articleNumber: 351,
+    title: "Article 351 - Hindi development",
+    summary: "Directive for development of Hindi language.",
+    solution: "Language development through proper channels."
+  },
+  {
+    articleNumber: 352,
+    title: "Article 352 - Emergency proclamation",
+    summary: "Proclamation of Emergency.",
+    solution: "Emergency matters through proper channels."
+  },
+  {
+    articleNumber: 353,
+    title: "Article 353 - Emergency effects",
+    summary: "Effect of Proclamation of Emergency.",
+    solution: "Emergency effects through proper channels."
+  },
+  {
+    articleNumber: 354,
+    title: "Article 354 - Financial provisions",
+    summary: "Application of financial provisions during Emergency.",
+    solution: "Emergency finance through proper channels."
+  },
+  {
+    articleNumber: 355,
+    title: "Article 355 - Union's duty",
+    summary: "Duty of Union to protect States.",
+    solution: "State protection through proper channels."
+  },
+  {
+    articleNumber: 356,
+    title: "Article 356 - State Emergency",
+    summary: "Provisions in case of failure of constitutional machinery in States.",
+    solution: "President's Rule through proper channels."
+  },
+  {
+    articleNumber: 357,
+    title: "Article 357 - Legislative powers",
+    summary: "Exercise of legislative powers under State Emergency.",
+    solution: "Emergency legislation through proper channels."
+  },
+  {
+    articleNumber: 358,
+    title: "Article 358 - Fundamental Rights",
+    summary: "Suspension of Article 19 during emergencies.",
+    solution: "Rights suspension through proper channels."
+  },
+  {
+    articleNumber: 359,
+    title: "Article 359 - Rights suspension",
+    summary: "Suspension of enforcement of Fundamental Rights.",
+    solution: "Rights enforcement through proper channels."
+  },
+  {
+    articleNumber: 360,
+    title: "Article 360 - Financial Emergency",
+    summary: "Provisions for financial emergency.",
+    solution: "Financial emergency through proper channels."
+  },
+  {
+    articleNumber: 361,
+    title: "Article 361 - Presidential immunity",
+    summary: "Protection of President and Governors.",
+    solution: "Constitutional immunity through proper channels."
+  },
+  {
+    articleNumber: "361A",
+    title: "Article 361A - Parliamentary proceedings",
+    summary: "Protection of publication of proceedings.",
+    solution: "Publication matters through proper channels."
+  },
+  {
+    articleNumber: "361B",
+    title: "Article 361B - Disqualification",
+    summary: "Disqualification for government contracts.",
+    solution: "Disqualification through proper channels."
+  },
+  {
+    articleNumber: 362,
+    title: "Article 362 - [Repealed]",
+    summary: "Article repealed by Constitution (26th Amendment) Act, 1971.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 363,
+    title: "Article 363 - Bar to interference",
+    summary: "Bar to interference by courts in disputes.",
+    solution: "Dispute resolution through proper channels."
+  },
+  {
+    articleNumber: "363A",
+    title: "Article 363A - Recognition",
+    summary: "Recognition granted to Rulers of Indian States to cease.",
+    solution: "Historical matters through proper channels."
+  },
+  {
+    articleNumber: 364,
+    title: "Article 364 - Special provisions",
+    summary: "Special provisions as to major ports and aerodromes.",
+    solution: "Infrastructure matters through proper channels."
+  },
+  {
+    articleNumber: 365,
+    title: "Article 365 - State failure",
+    summary: "Effect of failure to comply with Union directions.",
+    solution: "Compliance matters through proper channels."
+  },
+  {
+    articleNumber: 366,
+    title: "Article 366 - Definitions",
+    summary: "Definitions of terms used in Constitution.",
+    solution: "Constitutional interpretation through proper channels."
+  },
+  {
+    articleNumber: 367,
+    title: "Article 367 - Interpretation",
+    summary: "Interpretation of Constitution.",
+    solution: "Constitutional interpretation through proper channels."
+  },
+  {
+    articleNumber: 368,
+    title: "Article 368 - Amendment power",
+    summary: "Power of Parliament to amend Constitution.",
+    solution: "Constitutional amendments through Parliament."
+  },
+  {
+    articleNumber: 369,
+    title: "Article 369 - Temporary power",
+    summary: "Temporary power to Parliament to make laws.",
+    solution: "Legislative matters through proper channels."
+  },
+  {
+    articleNumber: 370,
+    title: "Article 370 - [Repealed]",
+    summary: "Article effectively abrogated in 2019.",
+    solution: "Historical reference through proper channels."
+  },
+  {
+    articleNumber: 371,
+    title: "Article 371 - Special provision",
+    summary: "Special provision with respect to States.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371A",
+    title: "Article 371A - Nagaland",
+    summary: "Special provision with respect to Nagaland.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371B",
+    title: "Article 371B - Assam",
+    summary: "Special provision with respect to Assam.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371C",
+    title: "Article 371C - Manipur",
+    summary: "Special provision with respect to Manipur.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371D",
+    title: "Article 371D - Andhra Pradesh",
+    summary: "Special provisions for Andhra Pradesh.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371E",
+    title: "Article 371E - Andhra Pradesh",
+    summary: "Establishment of Central University in Andhra Pradesh.",
+    solution: "Educational matters through proper channels."
+  },
+  {
+    articleNumber: "371F",
+    title: "Article 371F - Sikkim",
+    summary: "Special provisions with respect to Sikkim.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371G",
+    title: "Article 371G - Mizoram",
+    summary: "Special provisions with respect to Mizoram.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371H",
+    title: "Article 371H - Arunachal Pradesh",
+    summary: "Special provisions with respect to Arunachal Pradesh.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371I",
+    title: "Article 371I - Goa",
+    summary: "Special provisions with respect to Goa.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: "371J",
+    title: "Article 371J - Karnataka",
+    summary: "Special provisions for Hyderabad-Karnataka region.",
+    solution: "State matters through proper channels."
+  },
+  {
+    articleNumber: 372,
+    title: "Article 372 - Existing laws",
+    summary: "Continuance of existing laws.",
+    solution: "Legal matters through proper channels."
+  },
+  {
+    articleNumber: "372A",
+    title: "Article 372A - Power of President",
+    summary: "Power of President to adapt laws.",
+    solution: "Legal adaptation through proper channels."
+  },
+  {
+    articleNumber: 373,
+    title: "Article 373 - Power of President",
+    summary: "Power of President to make orders.",
+    solution: "Presidential orders through proper channels."
+  },
+  {
+    articleNumber: 374,
+    title: "Article 374 - Federal Court",
+    summary: "Provisions as to Federal Court judges.",
+    solution: "Judicial matters through proper channels."
+  },
+  {
+    articleNumber: 375,
+    title: "Article 375 - Supreme Court",
+    summary: "Supreme Court to be successor to Federal Court.",
+    solution: "Judicial succession through proper channels."
+  },
+  {
+    articleNumber: 376,
+    title: "Article 376 - High Court judges",
+    summary: "Provisions as to High Court judges.",
+    solution: "Judicial matters through proper channels."
+  },
+  {
+    articleNumber: 377,
+    title: "Article 377 - Audit provisions",
+    summary: "Provisions as to Auditor-General.",
+    solution: "Audit matters through proper channels."
+  },
+  {
+    articleNumber: 378,
+    title: "Article 378 - [Repealed]",
+    summary: "Article repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 379,
+    title: "Article 379-391 - [Repealed]",
+    summary: "Articles repealed by Constitution (7th Amendment) Act, 1956.",
+    solution: "Historical reference through Law Ministry."
+  },
+  {
+    articleNumber: 392,
+    title: "Article 392 - Power of President",
+    summary: "Power of President to remove difficulties.",
+    solution: "Constitutional matters through proper channels."
+  },
+  {
+    articleNumber: 393,
+    title: "Article 393 - Short title",
+    summary: "Short title of the Constitution.",
+    solution: "Constitutional reference through proper channels."
+  },
+  {
+    articleNumber: 394,
+    title: "Article 394 - Commencement",
+    summary: "Commencement of the Constitution.",
+    solution: "Constitutional matters through proper channels."
+  },
+  {
+    articleNumber: "394A",
+    title: "Article 394A - Authoritative texts",
+    summary: "Authoritative text in Hindi language.",
+    solution: "Constitutional texts through proper channels."
+  },
+  {
+    articleNumber: 395,
+    title: "Article 395 - Repeals",
+    summary: "Repeals of previous constitutional acts.",
+    solution: "Historical matters through proper channels."
+  }
+];
+
+function showSection(id) {
+  // Hide all sections
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Show the selected section
+  const section = document.getElementById(id);
+  if (section) {
+    section.classList.add('active');
+    
+    // Update auth navigation active state
+    document.querySelectorAll('.auth-btn').forEach(btn => {
+      if (btn.id === 'btn' + id.replace('Section', '')) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    
+    // If showing articles section, make sure articles are displayed
+    if (id === 'allArticlesSection') {
+      displayAllArticles();
+    }
+  }
+}
+
+function handleUserLogin(event) {
+  event.preventDefault();
+  const username = document.getElementById('userLoginUsername').value;
+  const password = document.getElementById('userLoginPassword').value;
+  
+  if (username && password) {
+    loggedInUser = { username };
+    
+    // Hide auth buttons
+    document.querySelector('.auth-nav').style.display = 'none';
+    
+    // Show navbar
+    document.getElementById('mainNavbar').style.display = 'block';
+    
+    // Show home section
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('active');
+    });
+    document.getElementById('home-section').classList.add('active');
+    
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('onclick').includes('home-section')) {
+        link.classList.add('active');
+      }
+    });
+    
+    // Clear the form
+    event.target.reset();
+  } else {
+    alert('Please enter both username and password');
+  }
+  return false;
+}
+
+function handleUserSignup(event) {
+  event.preventDefault();
+  const username = document.getElementById('userSignupUsername').value;
+  const password = document.getElementById('userSignupPassword').value;
+  const confirmPassword = document.getElementById('userSignupConfirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  // Simple validation for demo
+  if (username && password) {
+    loggedInUser = { username };
+    document.getElementById('mainNavbar').style.display = '';
+    showSection('home-section');
+  } else {
+    alert('Please fill all fields');
+  }
+}
+
+function handlePoliceLogin(event) {
+  event.preventDefault();
+  const policeId = document.getElementById('policeLoginID').value;
+  const password = document.getElementById('policeLoginPassword').value;
+  
+  if (policeId && password) {
+    loggedInPolice = { policeId };
+    
+    // Hide auth buttons
+    document.querySelector('.auth-nav').style.display = 'none';
+    
+    // Show navbar
+    document.getElementById('mainNavbar').style.display = 'block';
+    
+    // Load and display reports
+    loadPoliceReports();
+    
+    // Navigate to police dashboard
+    navigateTo('policeDashboardSection');
+  } else {
+    alert('Please enter both Police ID and password');
+  }
+  return false;
+}
+
+function handlePoliceSignup(event) {
+  event.preventDefault();
+  const policeId = document.getElementById('policeSignupID').value;
+  const name = document.getElementById('policeSignupName').value;
+  const password = document.getElementById('policeSignupPassword').value;
+  const confirmPassword = document.getElementById('policeSignupConfirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  // Simple validation for demo
+  if (policeId && name && password) {
+    loggedInUser = { policeId, name, isPolice: true };
+    document.getElementById('mainNavbar').style.display = '';
+    showSection('home-section');
+  } else {
+    alert('Please fill all fields');
+  }
+}
+
+function handleLogout() {
+  loggedInUser = null;
+  document.getElementById('mainNavbar').style.display = 'none';
+  showSection('userLoginSection');
+}
+
+function handleReportSubmit(event) {
+  event.preventDefault();
+  
+  // Get form values
+  const formData = {
+    name: document.getElementById('reportName').value,
+    mobile: document.getElementById('reportMobile').value,
+    email: document.getElementById('reportEmail').value,
+    location: document.getElementById('reportLocation').value,
+    date: document.getElementById('reportDate').value,
+    time: document.getElementById('reportTime').value,
+    type: document.getElementById('reportType').value,
+    description: document.getElementById('reportProblem').value,
+    witnesses: document.getElementById('reportWitnesses').value,
+    status: 'pending',
+    id: 'RPT_' + Date.now()
+  };
+
+  // Save report
+  const reports = JSON.parse(localStorage.getItem(STORAGE_REPORTS) || '[]');
+  reports.push(formData);
+  localStorage.setItem(STORAGE_REPORTS, JSON.stringify(reports));
+  
+  // Show success message
+  alert('Your report has been submitted successfully. Please visit the nearest police station with the Report ID: ' + formData.id);
+  
+  // Clear form
+  event.target.reset();
+  
+  return false;
+}
+
+// Filter reports
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const filter = e.target.dataset.filter;
+    
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    
+    // Filter reports
+    document.querySelectorAll('.report-card').forEach(card => {
+      if (filter === 'all' || card.dataset.status === filter) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+function loadPoliceReports() {
+  const reports = JSON.parse(localStorage.getItem(STORAGE_REPORTS) || '[]');
+  const reportsList = document.getElementById('policeReportsList');
+  const alertBanner = document.getElementById('newReportsAlert');
+  const sirenAudio = document.getElementById('sirenAudio');
+  
+  if (reports.length > 0) {
+    // Show alert and play siren
+    alertBanner.style.display = 'flex';
+    sirenAudio.play();
+    
+    // Generate reports HTML
+    reportsList.innerHTML = reports.map(report => `
+      <div class="report-card ${report.type === 'humanRights' ? 'urgent' : ''}" data-status="${report.status || 'pending'}">
+        <div class="report-header">
+          <h4>Report #${report.id}</h4>
+          <span class="report-status status-${report.status || 'pending'}">
+            ${report.status || 'Pending'}
+          </span>
+        </div>
+        <div class="report-details">
+          <div>
+            <strong>Reporter:</strong> ${report.name}<br>
+            <strong>Contact:</strong> ${report.mobile}
+          </div>
+          <div>
+            <strong>Location:</strong> ${report.location}<br>
+            <strong>Date:</strong> ${report.date} ${report.time}
+          </div>
+          <div>
+            <strong>Type:</strong> ${report.type}<br>
+            <strong>Status:</strong> ${report.status || 'Pending'}
+          </div>
+        </div>
+        <div class="report-content">
+          <strong>Description:</strong>
+          <p>${report.description}</p>
+          ${report.witnesses ? `<strong>Witnesses:</strong><p>${report.witnesses}</p>` : ''}
+        </div>
+        <div class="report-actions">
+          <button class="action-btn investigate" onclick="updateReportStatus('${report.id}', 'investigating')">
+            Start Investigation
+          </button>
+          <button class="action-btn resolve" onclick="updateReportStatus('${report.id}', 'resolved')">
+            Mark as Resolved
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    reportsList.innerHTML = '<p>No reports found.</p>';
+  }
+}
+
+function updateReportStatus(reportId, newStatus) {
+  const reports = JSON.parse(localStorage.getItem(STORAGE_REPORTS) || '[]');
+  const updatedReports = reports.map(report => {
+    if (report.id === reportId) {
+      return { ...report, status: newStatus };
+    }
+    return report;
+  });
+  
+  localStorage.setItem(STORAGE_REPORTS, JSON.stringify(updatedReports));
+  loadPoliceReports();
+}
+
+function getCurrentLocation() {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser');
+    return;
+  }
+  
+  const locationBtn = document.querySelector('button[onclick="getCurrentLocation()"]');
+  locationBtn.disabled = true;
+  locationBtn.textContent = 'Detecting location...';
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      document.getElementById('reportLocation').value = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      locationBtn.disabled = false;
+      locationBtn.textContent = 'Get Current Location';
+    },
+    (error) => {
+      alert('Unable to retrieve your location: ' + error.message);
+      locationBtn.disabled = false;
+      locationBtn.textContent = 'Get Current Location';
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+function searchArticles(q) {
+  q = q.trim().toLowerCase();
+  if (!q) return [];
+  
+  // Define problem-article mapping for common issues
+  const problemMap = {
+    // Rights related problems
+    'discrimination': ['14', '15', '16', '17'],
+    'equality': ['14', '15', '16'],
+    'harassment': ['21', '22', '23'],
+    'freedom': ['19', '21', '25'],
+    'education': ['21A', '28', '29', '30'],
+    'job': ['16', '41', '42'],
+    'work': ['16', '41', '42', '43'],
+    'religion': ['25', '26', '27', '28'],
+    'speech': ['19'],
+    'expression': ['19'],
+    
+    // Legal issues
+    'arrest': ['22', '23'],
+    'police': ['22', '23'],
+    'court': ['32', '226'],
+    'legal': ['32', '226'],
+    'lawyer': ['22', '39A'],
+    
+    // Social issues
+    'women': ['15', '16', '39', '42'],
+    'children': ['21A', '24', '39', '45'],
+    'minority': ['29', '30'],
+    'caste': ['15', '17'],
+    'poverty': ['21', '38', '39', '41'],
+    
+    // Property and business
+    'property': ['300A'],
+    'business': ['19', '301'],
+    'trade': ['19', '301', '303'],
+    
+    // Basic needs
+    'food': ['21', '47'],
+    'health': ['21', '47'],
+    'shelter': ['21'],
+    'water': ['21'],
+  };
+
+  // Get active category
+  const activeCategory = document.querySelector('.filter-chip.active').dataset.category;
+  
+  // Enhanced scoring function
+  function getScore(article, searchTerm) {
+    let score = 0;
+    const title = article.title.toLowerCase();
+    const summary = article.summary.toLowerCase();
+    const solution = article.solution.toLowerCase();
+    const articleNum = article.articleNumber.toString().toLowerCase();
+    
+    // Check if search term matches any problem keywords
+    for (const [problem, articles] of Object.entries(problemMap)) {
+      if (searchTerm.includes(problem) && articles.includes(articleNum)) {
+        score += 20; // High priority for problem-specific matches
+      }
+    }
+    
+    // Exact matches
+    if (title.includes(searchTerm)) score += 10;
+    if (summary.includes(searchTerm)) score += 5;
+    if (solution.includes(searchTerm)) score += 8; // Increased weight for solution matches
+    if (articleNum === searchTerm) score += 15;
+    
+    // Partial matches
+    if (title.split(' ').some(word => word.includes(searchTerm))) score += 3;
+    if (summary.split(' ').some(word => word.includes(searchTerm))) score += 2;
+    if (solution.split(' ').some(word => word.includes(searchTerm))) score += 4;
+    
+    return score;
+  }
+  
+  // Enhanced search logic
+  const searchTerms = q.split(' ').filter(term => term.length > 0);
+  
+  return constitutionArticles
+    .filter(article => {
+      // Category filtering
+      if (activeCategory !== 'all') {
+        const categoryKeywords = categories[activeCategory];
+        if (!categoryKeywords.some(keyword => 
+          article.title.toLowerCase().includes(keyword) || 
+          article.summary.toLowerCase().includes(keyword)
+        )) {
+          return false;
+        }
+      }
+      
+      // Problem-based matching
+      const matchesProblem = searchTerms.some(term => {
+        for (const [problem, articles] of Object.entries(problemMap)) {
+          if (term.includes(problem) && articles.includes(article.articleNumber)) {
+            return true;
+          }
+        }
+        return false;
+      });
+      
+      // Regular content matching
+      const matchesContent = searchTerms.some(term =>
+        article.title.toLowerCase().includes(term) ||
+        article.summary.toLowerCase().includes(term) ||
+        article.solution.toLowerCase().includes(term) ||
+        article.articleNumber.toString().toLowerCase().includes(term)
+      );
+      
+      return matchesProblem || matchesContent;
+    })
+    .map(article => ({
+      ...article,
+      score: searchTerms.reduce((sum, term) => sum + getScore(article, term), 0)
+    }))
+    .sort((a, b) => b.score - a.score);
+}
+
+function displaySearchResults(arr, q) {
+  const resultsDiv = document.getElementById('searchResults');
+  
+  if (!q) {
+    resultsDiv.innerHTML = '<p class="no-results">Enter a query to search articles.</p>';
+    return;
+  }
+  
+  if (arr.length === 0) {
+    resultsDiv.innerHTML = '<p class="no-results">No matching articles found.</p>';
+    return;
+  }
+  
+  // Add search stats
+  const statsHtml = `<div class="search-stats">Found ${arr.length} matching article${arr.length === 1 ? '' : 's'}</div>`;
+  
+  // Highlight matching text
+  function highlightText(text, searchTerm) {
+    const terms = searchTerm.split(' ').filter(term => term.length > 0);
+    let highlightedText = text;
+    terms.forEach(term => {
+      const regex = new RegExp(`(${term})`, 'gi');
+      highlightedText = highlightedText.replace(regex, '<span class="highlight">$1</span>');
+    });
+    return highlightedText;
+  }
+  
+  let html = statsHtml;
+  arr.forEach(a => {
+    html += `
+      <article tabindex="0" aria-label="Article ${a.articleNumber}: ${a.title}">
+        <h4>
+          <span class="article-number">Article ${a.articleNumber}:</span> 
+          ${highlightText(a.title, q)}
+        </h4>
+        <p><strong>Summary:</strong> ${highlightText(a.summary, q)}</p>
+        <p><strong>Suggested Solution:</strong> ${highlightText(a.solution, q)}</p>
+      </article>
+    `;
+  });
+  
+  resultsDiv.innerHTML = html;
+}
+
+// Add event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  const clearSearchBtn = document.getElementById('clearSearchBtn');
+  const filterChips = document.querySelectorAll('.filter-chip');
+  
+  // Real-time search
+  let searchTimeout;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const query = this.value;
+      const results = searchArticles(query);
+      displaySearchResults(results, query);
+    }, 300);
+  });
+  
+  // Clear search
+  clearSearchBtn.addEventListener('click', function() {
+    searchInput.value = '';
+    searchResults.innerHTML = '<p class="no-results">Enter a query to search articles.</p>';
+  });
+  
+  // Category filters
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', function() {
+      filterChips.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      const query = searchInput.value;
+      if (query) {
+        const results = searchArticles(query);
+        displaySearchResults(results, query);
+      }
+    });
+  });
+});
+
+function detectLocation(){
+  if(!navigator.geolocation){
+    alert("Geolocation not supported");
+    return;
+  }
+  btnDetectLocation.disabled=true;
+  btnDetectLocation.textContent="Detecting...";
+  navigator.geolocation.getCurrentPosition(pos=>{
+    reportLocationInput.value=`Lat: ${pos.coords.latitude.toFixed(6)}, Lon: ${pos.coords.longitude.toFixed(6)}`;
+    btnDetectLocation.textContent="Detect My Location";
+    btnDetectLocation.disabled=false;
+  },()=>{
+    alert("Location detection failed or denied.");
+    btnDetectLocation.textContent="Detect My Location";
+    btnDetectLocation.disabled=false;
+  },{timeout:10000});
+}
+function addReport(report){
+  let reports=loadReports();
+  report.id='rpt_'+Date.now();
+  report.timestamp=new Date().toISOString();
+  reports.push(report);
+  saveReports(reports);
+  const msg=`New complaint from ${report.name}, Phone: ${report.phone}, Location: ${report.location}, Details: ${report.details}`;
+  addMessage({recipient:`Admin (${adminMobileNumber})`,text:msg,timestamp:new Date().toISOString()});
+  addMessage({recipient:'Police',text:msg,timestamp:new Date().toISOString()});
+}
+function renderReports(){
+  let reports=loadReports();
+  if(reports.length===0){
+    reportsList.innerHTML='<p>No reports available</p>';
+    return;
+  }
+  let html='<ul style="list-style:none;padding-left:0;">';
+  reports.forEach(r=>{
+    html+=`<li tabindex="0" style="border:1px solid #ccc;margin-bottom:8px;padding:12px;border-radius:5px;">
+      <strong>Report ID:</strong> ${r.id}<br />
+      <strong>Name:</strong> ${r.name}<br />
+      <strong>Phone:</strong> ${r.phone}<br />
+      <strong>Location:</strong> ${r.location}<br />
+      <strong>Details:</strong> ${r.details}<br />
+      <small>Reported At: ${new Date(r.timestamp).toLocaleString()}</small>
+    </li>`;
+  });
+  html+='</ul>';
+  reportsList.innerHTML=html;
+}
+function renderMessages(){
+  const msgs=loadMessages();
+  if(msgs.length===0){
+    messagesList.innerHTML='<li>No new messages</li>';
+    return;
+  }
+  let html='';
+  msgs.forEach(m=>{
+    html+=`<li><strong>To:</strong> ${m.recipient}<br/><strong>Message:</strong> ${m.text}<br/><small>Sent At: ${new Date(m.timestamp).toLocaleString()}</small></li>`;
+  });
+  messagesList.innerHTML=html;
+}
+function clearMessages(){
+  saveMessages([]);
+}
+function checkAndPlayAlarm(){
+  const reports=loadReports();
+  if(reports.length>0){
+    alarmText.classList.remove('hidden');
+    // Play siren by SpeechSynthesis as fallback or addition
+    if(window.speechSynthesis){
+      const utterance = new SpeechSynthesisUtterance('New FIR reported. Please attend immediately.');
+      utterance.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    policeAlarmAudio.play().catch(()=>{});
+  }
+  else{
+    alarmText.classList.add('hidden');
+    policeAlarmAudio.pause();
+    policeAlarmAudio.currentTime=0;
+  }
+}
+
+btnUserLogin.addEventListener('click',()=>showSection('userLoginSection'));
+btnUserSignup.addEventListener('click',()=>showSection('userSignupSection'));
+btnPoliceLogin.addEventListener('click',()=>showSection('policeLoginSection'));
+btnPoliceSignup.addEventListener('click',()=>showSection('policeSignupSection'));
+
+document.getElementById('showSignupBtn').addEventListener('click',()=>showSection('userSignupSection'));
+document.getElementById('showLoginBtn').addEventListener('click',()=>showSection('userLoginSection'));
+document.getElementById('showPoliceSignupBtn').addEventListener('click',()=>showSection('policeSignupSection'));
+document.getElementById('showPoliceLoginBtn').addEventListener('click',()=>showSection('policeLoginSection'));
+
+userLoginForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  userLoginMessage.textContent='';
+  const u=userLoginForm.userLoginUsername.value.trim();
+  const p=userLoginForm.userLoginPassword.value;
+  if(!u||!p){
+    userLoginMessage.textContent='Please enter username and password.';
+    userLoginMessage.className='message error';
+    return;
+  }
+  if(authenticateUser(u,p)){
+    loggedInUser={username:u};
+    clearUserForms();
+    clearReportForm();
+    document.getElementById('mainNavbar').style.display = '';
+    showSection('home-section');
+    alert(`Welcome back, ${u}!`);
+  } else{
+    userLoginMessage.textContent='Invalid username or password.';
+    userLoginMessage.className='message error';
+  }
+});
+
+userSignupForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  userSignupMessage.textContent='';
+  const u=userSignupForm.userSignupUsername.value.trim();
+  const eMail=userSignupForm.userSignupEmail.value.trim();
+  const p=userSignupForm.userSignupPassword.value;
+  if(!u||!eMail||!p){
+    userSignupMessage.textContent='Please fill all fields.';
+    userSignupMessage.className='message error';
+    return;
+  }
+  if(addUser(u,eMail,p)){
+    userSignupMessage.textContent='Signup successful! You can now login.';
+    userSignupMessage.className='message success';
+    userSignupForm.reset();
+  } else{
+    userSignupMessage.textContent='Username already exists.';
+    userSignupMessage.className='message error';
+  }
+});
+
+policeSignupForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  policeSignupMessage.textContent='';
+  const id=policeSignupForm.policeSignupID.value.trim();
+  const n=policeSignupForm.policeSignupName.value.trim();
+  const p=policeSignupForm.policeSignupPassword.value;
+  if(!id||!n||!p){
+    policeSignupMessage.textContent='Please fill all fields.';
+    policeSignupMessage.className='message error';
+    return;
+  }
+  if(addPolice(id,n,p)){
+    policeSignupMessage.textContent='Police account created successfully! You can now login.';
+    policeSignupMessage.className='message success';
+    policeSignupForm.reset();
+  } else{
+    policeSignupMessage.textContent='Police ID already exists.';
+    policeSignupMessage.className='message error';
+  }
+});
+
+policeLoginForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  policeLoginMessage.textContent='';
+  const id=policeLoginForm.policeLoginID.value.trim();
+  const p=policeLoginForm.policeLoginPassword.value;
+  if(!id||!p){
+    policeLoginMessage.textContent='Please enter Police ID and password.';
+    policeLoginMessage.className='message error';
+    return;
+  }
+  if(authenticatePolice(id,p)){
+    loggedInPolice={id};
+    clearPoliceForms();
+    renderReports();
+    renderMessages();
+    showSection('policeDashboardSection');
+    alert(`Welcome Officer ${id}! If FIR reports exist, alarm will sound.`);
+    checkAndPlayAlarm();
+  } else{
+    policeLoginMessage.textContent='Invalid Police ID or password.';
+    policeLoginMessage.className='message error';
+  }
+});
+
+reportForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  reportMessage.textContent='';
+  if(!loggedInUser){
+    reportMessage.textContent='You must be logged in to submit reports.';
+    reportMessage.className='message error';
+    return;
+  }
+  const name=reportForm.reportName.value.trim();
+  const phone=reportForm.reportPhone.value.trim();
+  const location=reportForm.reportLocation.value.trim();
+  const details=reportForm.reportDetails.value.trim();
+  if(!name||!phone||!location||!details){
+    reportMessage.textContent='Please fill all fields.';
+    reportMessage.className='message error';
+    return;
+  }
+  addReport({name,phone,location,details});
+  alert(`Complaint submitted!\nNotification sent to admin at ${adminMobileNumber} and police.`);
+  reportMessage.textContent='Report submitted successfully and notified to police.';
+  reportMessage.className='message success';
+  reportForm.reset();
+});
+
+btnDetectLocation.addEventListener('click',()=>{
+  if(!navigator.geolocation){
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+  btnDetectLocation.disabled=true;
+  btnDetectLocation.textContent='Detecting...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude.toFixed(6);
+    const lon=pos.coords.longitude.toFixed(6);
+    reportLocationInput.value=`Lat: ${lat}, Lon: ${lon}`;
+    btnDetectLocation.textContent='Detect My Location';
+    btnDetectLocation.disabled=false;
+  },()=>{
+    alert('Location detection failed or permission denied.');
+    btnDetectLocation.textContent='Detect My Location';
+    btnDetectLocation.disabled=false;
+  },{timeout:10000});
+});
+
+showAllArticlesBtn.addEventListener('click',()=>{
+  let html='';
+  constitutionArticles.forEach(article=>{
+    html+=`<article tabindex="0" aria-label="Article ${article.articleNumber}: ${article.title}"><h4>Article ${article.articleNumber}: ${article.title}</h4><p><strong>Summary:</strong> ${article.summary}</p><p><strong>Suggested Solution:</strong> ${article.solution}</p></article>`;
+  });
+  searchResults.innerHTML=html;
+});
+
+policeLogoutBtn.addEventListener('click',()=>{
+  loggedInPolice=null;
+  clearPoliceForms();
+  reportsList.innerHTML='<p>No reports available</p>';
+  clearMessages();
+  messagesList.innerHTML='<li>No new messages</li>';
+  [btnUserLogin,btnUserSignup,btnPoliceLogin,btnPoliceSignup].forEach(btn=>btn.style.display='');
+  showSection('policeLoginSection');
+  alarmText.classList.add('hidden');
+  policeAlarmAudio.pause();
+  policeAlarmAudio.currentTime=0;
+});
+
+showSection('userLoginSection');
+
+// Add this at the beginning of your script section
+function showSection(sectionId) {
+  // Hide all sections
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+    section.style.display = 'none';
+  });
+  
+  // Show the selected section
+  const section = document.getElementById(sectionId);
+  if (section) {
+    section.classList.add('active');
+    section.style.display = 'block';
+    
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // If user is logged in, update navbar active state
+    if (loggedInUser || loggedInPolice) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('data-section') === sectionId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+    
+    // If showing articles section, display articles
+    if (sectionId === 'allArticlesSection') {
+      displayAllArticles();
+    }
+  }
+}
+
+// Add event listeners for navigation
+// Function to display all articles
+function displayAllArticles() {
+  const articlesList = document.getElementById('articlesList');
+  let html = '';
+  constitutionArticles.forEach(article => {
+    html += `
+      <div class="article-item">
+        <h4>Article ${article.articleNumber}: ${article.title}</h4>
+        <p><strong>Summary:</strong> ${article.summary}</p>
+        <p><strong>Solution:</strong> ${article.solution}</p>
+      </div>
+    `;
+  });
+  articlesList.innerHTML = html;
+}
+
+// Function to search in advisor section
+function searchAdvice() {
+  const query = document.getElementById('advisorSearch').value.toLowerCase();
+  const results = constitutionArticles.filter(article => 
+    article.title.toLowerCase().includes(query) ||
+    article.summary.toLowerCase().includes(query) ||
+    article.solution.toLowerCase().includes(query)
+  );
+  
+  const advisorResults = document.getElementById('advisorResults');
+  if (results.length === 0) {
+    advisorResults.innerHTML = '<p class="initial-text">No matching articles found. Try different keywords.</p>';
+    return;
+  }
+  
+  let html = '';
+  results.forEach(article => {
+    html += `
+      <div class="article-item">
+        <h4>Article ${article.articleNumber}: ${article.title}</h4>
+        <p><strong>Summary:</strong> ${article.summary}</p>
+        <p><strong>Solution:</strong> ${article.solution}</p>
+      </div>
+    `;
+  });
+  advisorResults.innerHTML = html;
+}
+
+// Function to display all articles
+function displayAllArticles() {
+  const articlesList = document.getElementById('articlesList');
+  let html = '';
+  
+  constitutionArticles.forEach(article => {
+    html += `
+      <div class="article-card">
+        <h4>Article ${article.articleNumber}: ${article.title}</h4>
+        <div class="article-content">
+          <p><strong>Summary:</strong> ${article.summary}</p>
+          <p><strong>Solution:</strong> ${article.solution}</p>
+        </div>
+      </div>
+    `;
+  });
+  
+  articlesList.innerHTML = html;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize event listeners for login/signup forms
+  document.getElementById('userLoginForm').addEventListener('submit', handleUserLogin);
+  document.getElementById('userSignupForm').addEventListener('submit', handleUserSignup);
+  document.getElementById('policeLoginForm').addEventListener('submit', handlePoliceLogin);
+  document.getElementById('policeSignupForm').addEventListener('submit', handlePoliceSignup);
+  document.getElementById('reportForm').addEventListener('submit', handleReportSubmit);
+
+  // Add click handlers for navbar links
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (link.classList.contains('logout-btn')) {
+        handleLogout();
+        return;
+      }
+      const sectionId = link.getAttribute('data-section');
+      if (sectionId) {
+        showSection(sectionId);
+        // Update active state
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  });
+  
+  // Add click handlers for nav links
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Handle logout button
+      if (link.classList.contains('logout-btn')) {
+        handleLogout();
+        return;
+      }
+      
+      // Only proceed if user is logged in
+      if (!loggedInUser && !loggedInPolice) {
+        alert('Please log in first');
+        return;
+      }
+      
+      const sectionId = link.getAttribute('data-section');
+      if (sectionId) {
+        showSection(sectionId);
+      }
+    });
+  });
+  
+  // Add enter key handler for advisor search
+  document.getElementById('advisorSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      searchAdvice();
+    }
+  });
+  
+  // Add click handlers for cards
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function() {
+      const sectionId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+      showSection(sectionId);
+      
+      // Update active state of nav links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.dataset.section === sectionId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+  });
+  
+  // Display all articles when the articles section is loaded
+  displayAllArticles();
+  
+  // Initialize showAllArticles function
+  window.showAllArticles = function() {
+    showSection('allArticlesSection');
+    let html = '';
+    constitutionArticles.forEach(article => {
+      html += `
+        <article class="article-card">
+          <h4>Article ${article.articleNumber}: ${article.title}</h4>
+          <p><strong>Summary:</strong> ${article.summary}</p>
+          <p><strong>Suggested Solution:</strong> ${article.solution}</p>
+        </article>
+      `;
+    });
+    document.getElementById('searchResults').innerHTML = html;
+  };
+});
+</script>
+
+</body>
+</html>

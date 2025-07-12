@@ -1,0 +1,275 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", "Courier New", monospace;
+}
+
+body {
+  background: #0d1117;
+  background-image: linear-gradient(to bottom, rgba(255, 56, 96, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(32, 156, 238, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f5f5f5;
+}
+
+/* Glass container */
+.container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(32, 156, 238, 0.3);
+  box-shadow: 0 0 20px rgba(255, 56, 96, 0.3);
+  width: 450px;
+  padding: 2rem;
+  border-radius: 12px;
+  animation: fadeInScale 1s ease;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Title */
+.form-title {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ff3860;
+  text-shadow: 0 0 10px #ff3860;
+  animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+/* Form */
+form {
+  margin: 0 1rem;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.input-group i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #209cee;
+}
+
+input {
+  width: 100%;
+  padding: 12px 12px 12px 2.2rem;
+  font-size: 16px;
+  color: #f5f5f5;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #209cee;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-bottom: 2px solid #ff3860;
+  outline: none;
+  box-shadow: 0 2px 10px #ff3860;
+}
+
+input::placeholder {
+  color: transparent;
+}
+
+/* Floating label */
+label {
+  position: absolute;
+  left: 2.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #aaa;
+  pointer-events: none;
+  background: #0d1117;
+  padding: 0 5px;
+  transition: 0.3s ease;
+}
+
+input:focus ~ label,
+input:not(:placeholder-shown) ~ label {
+  top: -0.8rem;
+  left: 1.5rem;
+  font-size: 0.8rem;
+  color: #ff3860;
+}
+
+/* Forgot link */
+.recover {
+  text-align: right;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.recover a {
+  text-decoration: none;
+  color: #209cee;
+}
+
+.recover a:hover {
+  color: #ff3860;
+  text-decoration: underline;
+}
+
+/* Button */
+button {
+  font-size: 1.1rem;
+  padding: 10px;
+  width: 100%;
+  background: rgba(255, 56, 96, 0.2);
+  color: #fff;
+  border: 2px solid #ff3860;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px rgba(255, 56, 96, 0.4);
+}
+
+button:hover {
+  background: #ff3860;
+  box-shadow: 0 0 20px #ff3860, 0 0 10px #209cee inset;
+}
+
+/* Or text */
+.or {
+  text-align: center;
+  margin: 1rem 0;
+  color: #ccc;
+}
+
+/* Social icons */
+.icons {
+  text-align: center;
+}
+
+.icons i {
+  font-size: 1.5rem;
+  color: #209cee;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: 2px solid #209cee;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.icons i:hover {
+  background: #ff3860;
+  color: #fff;
+  border-color: #ff3860;
+}
+
+/* Bottom links */
+.links {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #209cee;
+}
+
+#signUpButton,
+#signInButton {
+  font-size: 1rem;
+  background: transparent;
+  border: none;
+  color: #209cee;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#signUpButton:hover,
+#signInButton:hover {
+  color: #ff3860;
+  text-decoration: underline;
+}
+
+/* Alert box */
+.messageDiv {
+  background-color: rgba(255, 56, 96, 0.1);
+  border-left: 4px solid #ff3860;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-size: 1rem;
+  animation: slideIn 0.5s ease, fadeOut 6s 3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+/* Police login button styling */
+.police-login-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.police-btn {
+  width: auto;
+  padding: 12px 20px;
+  font-size: 1rem;
+  background: rgba(32, 156, 238, 0.15);
+  color: #fff;
+  border: 2px solid #209cee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px rgba(32, 156, 238, 0.4);
+  backdrop-filter: blur(5px);
+}
+
+.police-btn i {
+  margin-right: 8px;
+}
+
+.police-btn:hover {
+  background: #209cee;
+  box-shadow: 0 0 20px #209cee, 0 0 10px #ff3860 inset;
+  transform: translateY(-2px);
+}

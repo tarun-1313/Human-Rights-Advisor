@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Security Crime Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0c0c0c;
+      color: #d6e2ff;
+    }
+    header {
+      background-color: #01001b;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #0033cc;
+    }
+    header h1 {
+      font-size: 2rem;
+      color: #3399ff;
+      margin: 0;
+    }
+    header p {
+      font-size: 0.95rem;
+      color: #99bbff;
+      margin-top: 5px;
+    }
+    nav {
+      background-color: #0b0b2e;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 14px 0;
+    }
+    nav a {
+      color: #66aaff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #264dff;
+      color: #fff;
+    }
+    main {
+      padding: 30px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    section {
+      background-color: #121212;
+      border: 1px solid #1a1a66;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 35px;
+    }
+    section h2 {
+      color: #3399ff;
+      font-size: 1.5rem;
+      border-bottom: 1px solid #3366ff;
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+    }
+    .image-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    .image-row img {
+      width: 45%;
+      max-width: 350px;
+      border-radius: 5px;
+      border: 1px solid #3366ff;
+    }
+    section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #b8d1ff;
+      margin-top: 10px;
+    }
+    footer {
+      background-color: #01001b;
+      text-align: center;
+      padding: 18px;
+      font-size: 0.9rem;
+      color: #9fbfff;
+      border-top: 1px solid #0040ff;
+    }
+   .flip-card {
+  background-color: transparent;
+  width: 320px;
+  height: 240px;
+  perspective: 1000px;
+  margin: auto;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid #3366ff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flip-card-back {
+  background-color: #0b0b2e;
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+    #glass-popup, #second-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #011c40;
+  color: #66ccff;
+  padding: 16px 32px;
+  border: 2px solid #00ccff;
+  border-radius: 10px;
+  box-shadow: 0 0 25px #00ccff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  z-index: 10000;
+  opacity: 1;
+  white-space: nowrap;
+  visibility: hidden;
+}
+
+#glass-popup.show,
+#second-popup.show {
+  visibility: visible;
+}
+
+#glass-popup i,
+#second-popup i {
+  margin-right: 10px;
+  color: #00ffff;
+}
+
+.fragment {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(102, 204, 255, 0.8);
+  border: 1px solid #00ffff;
+  opacity: 1;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+#emoji-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  font-size: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  z-index: 10001;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+#emoji-screen.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Digital Crime Reporting and Human Rights Advisory</h1>
+  <p>Empowering Citizens to Report & Secure Their Rights Online</p>
+</header>
+
+<nav>
+  <a href="#">Home</a>
+  <a href="chatbot.html">Ask a Problem</a>
+  <a href="allarticles.html">All Articles</a>
+  <a href="report.html">Report a Crime</a>
+  <a href="emergency.html">Emergency Report</a>
+  <a href="#about-us">About Us</a>
+  <a href="index.html" id="logout">Logout</a>
+</nav>
+
+<section>
+  <section>
+    <div id="glass-popup">
+  <p><i class="fas fa-shield-alt"></i> Welcome to the Digital Crime Reporting and Human Rights Advisory</p>
+</div>
+
+<div id="second-popup">
+  <p><i class="fas fa-handshake"></i> We are here to help you</p>
+</div>
+
+<div id="emoji-screen">🙏🏻</div>
+
+
+
+    <h2>Human Right Advisor</h2>
+    <div class="image-row">
+      <img src="Hr1.png" alt="Advisor Image">
+      <img src="hr2.png" alt="Legal Aid">
+    </div>
+     <p>
+            A Human Rights Advisor is an expert who helps people understand and protect their basic rights. Their role is to guide individuals when their rights are threatened or violated, offering advice, support, and solutions. They ensure everyone knows their freedoms and how to stand up against injustice or discrimination.
+        </p>
+        <p>
+            Human rights are the fundamental freedoms that belong to every person, no matter who they are or where they come from. These rights include equality, freedom of speech, protection from harm, and the right to justice. A Human Rights Advisor educates people about these rights and helps them take action if they face any problems.
+        </p>
+       
+
+  </section>
+  <section>
+    <h2>Ask Your Problem</h2>
+   <div style="text-align: center; margin-bottom: 20px;">
+  <div style="display: inline-block; background-color: #0b0b2e; border: 1px solid #3366ff; padding: 10px 20px; border-radius: 8px; color: #66ccff; font-size: 1.2rem; margin-bottom: 15px;">
+    Facing an issue? Click below to get help from our Chatbot
+  </div>
+  <br />
+  <a href="chatbot.html">
+    <img src="chat.png" alt="Ask Chatbot" style="width: 100%; max-width: 450px; height: 420px; object-fit: cover; border-radius: 10px; border: 2px solid #3366ff;">
+  </a>
+  </a>
+</div>
+
+<p>
+  Every person has the right to live with dignity, equality, and freedom. These rights protect you from injustice, discrimination, and harm. If your rights are ever violated or you feel unsafe, a Human Rights Advisor can help. They guide you, explain your legal protections, and support you in reporting issues or seeking justice.
+</p>
+<p>
+  Have a question or facing a problem? Just click the above image to talk to our chatbot – we're here to help!
+</p>
+
+</section>
+
+  <section>
+    <h2>Report a Crime</h2>
+    <div class="image-row">
+      <img src="reprot a crime1 (1).png" alt="Report Screenshot">
+      <img src="reprot a crime2 (2).png" alt="Dashboard Screenshot">
+    </div>
+   <p>
+         Reporting a crime is an important step in ensuring justice and maintaining safety in the community. When you witness or experience a crime, it is essential to inform the proper authorities as soon as possible. Reporting a crime helps law enforcement agencies take immediate action to investigate the matter, protect victims, and prevent further harm. The process usually begins by contacting the police either by visiting the nearest police station or calling an emergency number. Providing accurate and detailed information about the incident, such as the time, location, description of the suspect, and what happened, is crucial for a thorough investigation. 
+    </p>
+    <p>
+         It is important to stay calm and cooperate fully with the officers, as your statement can be vital evidence in solving the crime. In many places, there are also options to report crimes online through official police websites or apps, making the process easier and more accessible. Additionally, victims of certain crimes, such as domestic violence or cybercrime, may have specialized reporting channels to ensure their safety and privacy. Reporting a crime not only helps bring the offender to justice but also strengthens community trust and safety. 
+     </p>
+     
+
+  </section>
+
+  <section>
+    <h2>Articles In Indian Constitution</h2>
+    <div class="image-row">
+      <img src="art1.png" alt="Report Screenshot">
+      <img src="art2.png" alt="Dashboard Screenshot">
+    </div>
+    <p>
+        The Indian Constitution provides essential protections and freedoms that every citizen needs to live with dignity, equality, and justice. These rights are important because they ensure that no one is treated unfairly because of their caste, religion, gender, or background. They give us the freedom to speak, express our opinions, follow any religion, and move or live freely across the country. These rights also protect us from being forced into labor, help children stay away from harmful work, and ensure that everyone gets equal treatment before the law.
+    </p>
+    
+
+  </section>
+
+  <section id="about-us">
+    <h2>About Us</h2>
+    <div class="chat-container">
+     <p>
+            Welcome to our platform dedicated to Human Rights Protection and Crime Reporting. We support individuals facing injustice or abuse and guide them legally and safely. You can report crimes directly from here, and we route them to authorities. We also spread awareness about your constitutional rights.
+     </p>
+     <p>📧 Email Contacts:<br>
+            support@humanrightshelp.in<br>
+            report@crimeportal.in
+     </p>
+    <p>📞 Helpline Numbers:<br>
+        +91 98765 43210<br>
+        +91 91234 56789<br>
+        +91 70123 45678<br>
+        +91 88990 11223
+    </p>
+    <p>
+      For any questions, support, or complaints, feel free to reach out to us. We are here to help you.
+    </p>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Human Rights Advisor Platform | Contact: support@humanrights.org | +91-98765-43210
+</footer>
+
+<!-- ✅ Add this logic just before closing </body> -->
+<script>
+
+ 
+  
+  function shatterEffect(targetId, callback) {
+    const popup = document.getElementById(targetId);
+    const rect = popup.getBoundingClientRect();
+    const numberOfFragments = 100;
+
+    popup.style.visibility = "hidden";
+
+    for (let i = 0; i < numberOfFragments; i++) {
+      const frag = document.createElement("div");
+      frag.className = "fragment";
+      frag.style.left = rect.left + Math.random() * rect.width + "px";
+      frag.style.top = rect.top + Math.random() * rect.height + "px";
+
+      document.body.appendChild(frag);
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = Math.random() * 300 + 100;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance + 200;
+
+      frag.animate([
+        { transform: "translate(0, 0)", opacity: 1 },
+        { transform: `translate(${x}px, ${y}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+      ], {
+        duration: 1500 + Math.random() * 1000,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+
+      setTimeout(() => frag.remove(), 2500);
+    }
+
+    // Call next step after shards animation
+    setTimeout(() => {
+      if (callback) callback();
+    }, 2500);
+  }
+
+  function showPopup(id, duration, onDone) {
+    const popup = document.getElementById(id);
+    popup.classList.add("show");
+
+    setTimeout(() => {
+      if (id === "glass-popup") {
+        shatterEffect(id, onDone);
+      } else {
+        popup.classList.remove("show");
+        if (onDone) onDone();
+      }
+    }, duration);
+  }
+
+  function showEmoji(duration) {
+    const emoji = document.getElementById("emoji-screen");
+    emoji.classList.add("show");
+    setTimeout(() => {
+      emoji.classList.remove("show");
+    }, duration);
+  }
+
+  // Sequence control
+  window.addEventListener("load", () => {
+    showPopup("glass-popup", 2000, () => {
+      showPopup("second-popup", 2000, () => {
+      
+      });
+    });
+  });
+
+
+
+
+
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+  if (!isLoggedIn) {
+    setTimeout(() => {
+      // After 10 seconds, allow scroll to trigger redirect
+      const scrollRedirect = () => {
+        window.location.href = "index.html";
+      };
+      window.addEventListener("scroll", scrollRedirect, { once: true });
+    }, 5000); // 10 seconds
+  }
+
+</script>
+
+</body>
+</html>

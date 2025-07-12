@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Human Rights Advisor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0c0c0c;
+      color: #d6e2ff;
+    }
+
+    .top-nav {
+      background: #01001b;
+      padding: 15px 0;
+      border-bottom: 2px solid #0033cc;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-title {
+      color: #3399ff;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .status-nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    .status-nav-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      background: #1a1a2e;
+      color: #d6e2ff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-nav-btn.active {
+      background: #264dff;
+      color: #fff;
+    }
+
+    .status-nav-btn:hover {
+      background: #3399ff;
+    }
+
+    .status-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+
+    .dashboard-content {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .search-box {
+      margin: 20px 0;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #264dff;
+      border-radius: 4px;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+    }
+
+    .report-card {
+      background: #1a1a2e;
+      border: 1px solid #264dff;
+      border-radius: 8px;
+      padding: 20px;
+      color: #d6e2ff;
+    }
+
+    .report-card h3 {
+      color: #3399ff;
+      margin: 0 0 15px 0;
+      border-bottom: 1px solid #264dff;
+      padding-bottom: 10px;
+    }
+
+    .status-badge {
+      display: none !important;
+    }
+
+    .info-group {
+      margin-bottom: 15px;
+    }
+
+    .info-group h4 {
+      color: #3399ff;
+      margin: 0 0 5px 0;
+    }
+
+    .info-group p {
+      margin: 5px 0;
+      line-height: 1.4;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 70px); /* Fixed size columns */
+      gap: 6px;
+      margin: 10px 0;
+      max-width: 300px;
+    }
+
+    .evidence-item {
+      width: 70px;
+      height: 70px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--primary-blue);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .evidence-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+
+    .evidence-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .evidence-label {
+      color: var(--text-blue);
+      font-size: 0.9em;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .status-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .status-btn.pending { 
+      background: #ffd700; 
+      color: #000; 
+    }
+    .status-btn.investigating { 
+      background: #ff9800; 
+      color: #fff; 
+    }
+    .status-btn.resolved { 
+      background: #4caf50; 
+      color: #fff; 
+    }
+
+    .status-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .status-btn.active {
+      box-shadow: 0 0 10px rgba(51, 153, 255, 0.5);
+    }
+
+    /* Image modal */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      max-width: 80%;
+      max-height: 80vh;
+      position: relative;
+      background: var(--card-bg);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: -30px;
+      right: 0;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .download-btn {
+      background-color: #264dff;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .download-btn:hover {
+      background-color: #1a3bb8;
+    }
+
+    .download-btn i {
+      font-size: 16px;
+    }
+
+    .emergency-link {
+      background: linear-gradient(45deg, #ff3333, #cc0000);
+      color: white !important;
+      animation: pulse 1.5s infinite;
+      position: relative;
+    }
+
+    .emergency-link:hover {
+      background: linear-gradient(45deg, #cc0000, #ff3333) !important;
+    }
+
+    .emergency-link::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff3333, #cc0000);
+      z-index: -1;
+      border-radius: 6px;
+      animation: borderPulse 1.5s infinite;
+    }
+
+    @keyframes borderPulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    /* Emergency Section Styles */
+    .emergency-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      border: 1px solid #ff3333;
+    }
+
+    .emergency-section h2 {
+      color: #ff3333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .emergency-section h2 i {
+      animation: siren 1s infinite;
+    }
+
+    .emergency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .emergency-card {
+      background: #0d0d0d;
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #ff3333;
+      animation: emergencyPulse 2s infinite;
+    }
+
+    .emergency-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff3333, #ff6666, #ff3333);
+      animation: sirenBar 1s infinite;
+    }
+
+    .emergency-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ff3333;
+    }
+
+    .emergency-type {
+      color: #ff3333;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .emergency-type i {
+      animation: siren 1s infinite;
+    }
+
+    .emergency-time {
+      color: #99bbff;
+      font-size: 14px;
+    }
+
+    .emergency-details {
+      color: #e0e0e0;
+    }
+
+    .emergency-details p {
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .emergency-details i {
+      color: #ff3333;
+      width: 20px;
+    }
+
+    .emergency-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .emergency-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .respond-btn {
+      background: #ff3333;
+    }
+
+    .status-btn {
+      background: #264dff;
+    }
+
+    @keyframes siren {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(15deg); }
+      75% { transform: rotate(-15deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes sirenBar {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes emergencyPulse {
+      0% { box-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.8); }
+      100% { box-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+    }
+
+    .no-emergencies {
+      text-align: center;
+      color: #99bbff;
+      padding: 20px;
+      font-style: italic;
+    }
+
+    .navbar {
+      background-color: #01001b;
+      padding: 15px 0;
+      border-bottom: 2px solid var(--primary-blue);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-title {
+      color: #3399ff;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-nav {
+      display: flex;
+      gap: 10px;
+      margin-left: 20px;
+    }
+
+    .status-nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--primary-blue);
+      color: var(--text-light);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s;
+    }
+
+    .status-nav-btn:hover {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .status-nav-btn.active {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .status-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.8em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-blue);
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    /* Emergency Alert in Navbar */
+    .emergency-alert {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .emergency-icon {
+      color: var(--emergency-red);
+      font-size: 24px;
+      animation: siren 1s infinite;
+    }
+
+    .emergency-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--emergency-red);
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    /* Emergency Dropdown */
+    .emergency-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--emergency-red);
+      border-radius: 8px;
+      padding: 10px;
+      min-width: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .emergency-dropdown.active {
+      display: block;
+    }
+
+    .emergency-item {
+      background: var(--dark-bg);
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid var(--emergency-red);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .emergency-item:hover {
+      transform: translateX(-5px);
+      border-color: #ff6666;
+    }
+
+    .emergency-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .emergency-type {
+      color: var(--emergency-red);
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .emergency-time {
+      color: var(--text-light);
+      font-size: 0.8em;
+    }
+
+    .emergency-details {
+      font-size: 0.9em;
+      color: var(--text-light);
+    }
+
+    .emergency-details p {
+      margin: 3px 0;
+    }
+
+    .emergency-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .emergency-btn {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.8em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .respond-btn {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .resolve-btn {
+      background: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="nav-left">
+        <div class="nav-title">
+          <i class="fas fa-shield-alt"></i>
+          Police Dashboard
+        </div>
+        <div class="status-nav">
+          <button class="status-nav-btn active" onclick="filterByStatus('all')">
+            <i class="fas fa-list"></i> All
+            <span class="status-count" id="allCount">0</span>
+          </button>
+          <button class="status-nav-btn" onclick="filterByStatus('pending')">
+            <i class="fas fa-clock"></i> Pending
+            <span class="status-count" id="pendingCount">0</span>
+          </button>
+          <button class="status-nav-btn" onclick="filterByStatus('investigating')">
+            <i class="fas fa-search"></i> Investigating
+            <span class="status-count" id="investigatingCount">0</span>
+          </button>
+          <button class="status-nav-btn" onclick="filterByStatus('resolved')">
+            <i class="fas fa-check-circle"></i> Resolved
+            <span class="status-count" id="resolvedCount">0</span>
+          </button>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-links">
+          
+          <a href="report.html">
+            <i class="fas fa-file-alt"></i> New Report
+          </a>
+          <div class="emergency-alert" onclick="toggleEmergencyDropdown()">
+            <i class="fas fa-exclamation-triangle emergency-icon"></i>
+            <span class="emergency-count" id="emergencyCount">0</span>
+            <div class="emergency-dropdown" id="emergencyDropdown">
+              <!-- Emergency reports will be inserted here -->
+            </div>
+          </div>
+        </div>
+        <!-- User Info and Logout Button -->
+        <div class="user-info">
+          <i class="fas fa-user-circle"></i>
+          <span id="userName">Officer Name</span>
+          <!-- Logout button: calls handleLogout() in dashboard.js -->
+          <button class="logout-btn" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Emergency Section -->
+  <div class="emergency-section" style="margin: 20px auto; max-width: 1200px; padding: 20px; background: #1a1a2e; border-radius: 8px; border: 1px solid #ff3333;">
+    <h2 style="color: #ff3333; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+      <i class="fas fa-exclamation-triangle" style="animation: siren 1s infinite;"></i>
+      Active Emergency Reports
+    </h2>
+    <div id="emergencyReports" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+      <!-- Emergency reports will be inserted here -->
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="dashboard-content">
+      <div class="search-box">
+        <input type="text" id="searchReports" placeholder="Search reports by name, crime type, location..." onkeyup="filterReports()">
+      </div>
+      <div id="reportsList" class="reports-grid"></div>
+    </div>
+
+    <!-- Regular Reports Section -->
+    <div class="reports-section">
+      <div id="reportsList" class="reports-grid"></div>
+    </div>
+  </div>
+
+  <!-- Add image modal -->
+  <div id="imageModal" class="image-modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="Evidence">
+    </div>
+  </div>
+
+  <script>
+    let currentStatusFilter = 'all';
+    let allReports = [];
+
+    function updateStatusCounts() {
+      const reports = JSON.parse(localStorage.getItem('crimeReports') || '[]');
+      const counts = {
+        all: reports.length,
+        pending: reports.filter(r => r.status === 'pending').length,
+        investigating: reports.filter(r => r.status === 'investigating').length,
+        resolved: reports.filter(r => r.status === 'resolved').length
+      };
+
+      document.getElementById('allCount').textContent = counts.all;
+      document.getElementById('pendingCount').textContent = counts.pending;
+      document.getElementById('investigatingCount').textContent = counts.investigating;
+      document.getElementById('resolvedCount').textContent = counts.resolved;
+    }
+
+    function filterByStatus(status) {
+      currentStatusFilter = status;
+      document.querySelectorAll('.status-nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase().includes(status)) {
+          btn.classList.add('active');
+        }
+      });
+      
+      const filteredReports = status === 'all' 
+        ? allReports 
+        : allReports.filter(report => report.status === status);
+      
+      displayReports(filteredReports);
+    }
+
+    function displayReports(reports) {
+      const reportsList = document.getElementById('reportsList');
+      if (reports.length === 0) {
+        reportsList.innerHTML = '<p>No reports found</p>';
+        return;
+      }
+
+      reportsList.innerHTML = reports.map(report => `
+        <div class="report-card" data-status="${report.status}">
+          <h3>${report.crimeType} ${report.otherCrimeType ? `- ${report.otherCrimeType}` : ''}</h3>
+          <div style="margin-bottom:8px; color:#66ff99; font-weight:bold;">Status: ${report.status.charAt(0).toUpperCase() + report.status.slice(1)}</div>
+          <div class="info-group">
+            <h4>Report Information</h4>
+            <p><strong>ID:</strong> ${report.id}</p>
+            <p><strong>Date:</strong> ${new Date(report.timestamp).toLocaleString()}</p>
+          </div>
+
+          <div class="info-group">
+            <h4>Reporter Details</h4>
+            <p><strong>Name:</strong> ${report.firstName} ${report.lastName}</p>
+          <p><strong>Email:</strong> ${report.email}</p>
+            <p><strong>Phone:</strong> ${report.phone}</p>
+          </div>
+
+          <div class="info-group">
+            <h4>Incident Details</h4>
+            <p><strong>Date:</strong> ${report.date}</p>
+            <p><strong>Time:</strong> ${report.time}</p>
+            <p><strong>Location:</strong> ${report.address || 'Not specified'}</p>
+            <p><strong>City:</strong> ${report.city || 'Not specified'}</p>
+            <p><strong>State:</strong> ${report.state || 'Not specified'}</p>
+          </div>
+
+          <div class="info-group">
+            <h4>Description</h4>
+            <p>${report.description || 'No description provided'}</p>
+          </div>
+
+          ${report.witnessInfo ? `
+          <div class="info-group">
+            <h4>Witness Information</h4>
+            <p>${report.witnessInfo}</p>
+          </div>
+          ` : ''}
+
+          ${report.evidenceUrls?.length ? `
+          <div class="evidence-label">
+            <i class="fas fa-images"></i> Evidence (${report.evidenceUrls.length})
+          </div>
+          <div class="evidence-grid">
+            ${report.evidenceUrls.map(url => {
+              if (url.startsWith('data:image')) {
+                return `<div class="evidence-item" onclick="showFullImage('${url}')">
+                          <img src="${url}" alt="Evidence">
+                        </div>`;
+              }
+              else if (url instanceof File) {
+                return `<div class="evidence-item" onclick="showFullImage('${URL.createObjectURL(url)}')">
+                          <img src="${URL.createObjectURL(url)}" alt="Evidence">
+                        </div>`;
+              }
+              else {
+                return `<div class="evidence-item" onclick="showFullImage('${url}')">
+                          <img src="${url}" alt="Evidence">
+                        </div>`;
+              }
+            }).join('')}
+          </div>
+          ` : ''}
+
+          <div class="card-actions">
+            <button class="status-btn pending ${report.status === 'pending' ? 'active' : ''}" 
+                    onclick="updateStatus('${report.id}', 'pending')">
+              <i class="fas fa-clock"></i> Pending
+            </button>
+            <button class="status-btn investigating ${report.status === 'investigating' ? 'active' : ''}" 
+                    onclick="updateStatus('${report.id}', 'investigating')">
+              <i class="fas fa-search"></i> Investigating
+            </button>
+            <button class="status-btn resolved ${report.status === 'resolved' ? 'active' : ''}" 
+                    onclick="updateStatus('${report.id}', 'resolved')">
+              <i class="fas fa-check-circle"></i> Resolved
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showFullImage(url) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'flex';
+      modalImg.src = url;
+    }
+
+    function updateStatus(reportId, newStatus) {
+      const reportIndex = allReports.findIndex(r => r.id === reportId);
+      
+      if (reportIndex === -1) return;
+      
+      allReports[reportIndex].status = newStatus;
+      localStorage.setItem('crimeReports', JSON.stringify(allReports));
+      
+      updateStatusCounts();
+      
+      filterByStatus(newStatus);
+    }
+
+    function filterReports() {
+      const searchTerm = document.getElementById('searchReports').value.toLowerCase();
+      
+      const filteredReports = allReports.filter(report => {
+        const matchesSearch = 
+          report.firstName.toLowerCase().includes(searchTerm) ||
+          report.lastName.toLowerCase().includes(searchTerm) ||
+          report.crimeType.toLowerCase().includes(searchTerm) ||
+          report.city?.toLowerCase().includes(searchTerm) ||
+          report.id.toLowerCase().includes(searchTerm) ||
+          report.description?.toLowerCase().includes(searchTerm);
+        
+        const matchesStatus = currentStatusFilter === 'all' || report.status === currentStatusFilter;
+        
+        return matchesSearch && matchesStatus;
+      });
+
+      displayReports(filteredReports);
+    }
+
+    function downloadReport(report) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Add title
+      doc.setFontSize(20);
+      doc.text('Crime Report', 105, 20, { align: 'center' });
+      
+      // Add report details
+      doc.setFontSize(12);
+      const details = [
+        ['Report ID:', report.id],
+        ['Date:', new Date(report.date).toLocaleDateString()],
+        ['Time:', report.time],
+        ['Crime Type:', report.crimeType],
+        ['Location:', `${report.address}, ${report.city}, ${report.state}`],
+        ['Description:', report.description],
+        ['Witness Info:', report.witnessInfo || 'None provided'],
+        ['Status:', report.status.charAt(0).toUpperCase() + report.status.slice(1)],
+        ['Submitted By:', `${report.firstName} ${report.lastName}`],
+        ['Contact:', `${report.email} | ${report.phone}`]
+      ];
+      
+      // Add details table
+      doc.autoTable({
+        startY: 30,
+        head: [['Field', 'Value']],
+        body: details,
+        theme: 'grid',
+        headStyles: { fillColor: [38, 77, 255] },
+        styles: { fontSize: 10 },
+        columnStyles: {
+          0: { cellWidth: 50 },
+          1: { cellWidth: 140 }
+        }
+      });
+      
+      // Add evidence images if any
+      if (report.evidenceUrls && report.evidenceUrls.length > 0) {
+        let yPos = doc.lastAutoTable.finalY + 20;
+        doc.text('Evidence Images:', 14, yPos);
+        yPos += 10;
+        
+        // Add each image
+        for (let i = 0; i < report.evidenceUrls.length; i++) {
+          if (yPos > 250) { // Start new page if near bottom
+            doc.addPage();
+            yPos = 20;
+          }
+          
+          try {
+            doc.addImage(report.evidenceUrls[i], 'JPEG', 14, yPos, 50, 50);
+            yPos += 60;
+          } catch (e) {
+            console.error('Error adding image to PDF:', e);
+          }
+        }
+      }
+      
+      // Save the PDF
+      doc.save(`crime_report_${report.id}.pdf`);
+    }
+
+    function displayEmergencyReports() {
+      const reportsContainer = document.getElementById('emergencyReports');
+      const reports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+      
+      if (reports.length === 0) {
+        reportsContainer.innerHTML = `
+          <div style="text-align: center; color: #99bbff; padding: 20px; font-style: italic;">
+            <i class="fas fa-check-circle"></i>
+            No active emergency reports
+          </div>
+        `;
+        return;
+      }
+
+      reportsContainer.innerHTML = reports.map(report => `
+        <div style="background: #0d0d0d; border-radius: 8px; padding: 20px; position: relative; overflow: hidden; border: 1px solid #ff3333; animation: emergencyPulse 2s infinite;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ff3333, #ff6666, #ff3333); animation: sirenBar 1s infinite;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ff3333;">
+            <div style="color: #ff3333; font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-exclamation-circle" style="animation: siren 1s infinite;"></i>
+              ${report.type.replace(/_/g, ' ').toUpperCase()}
+            </div>
+            <span style="color: #99bbff; font-size: 14px;">
+              ${new Date(report.timestamp).toLocaleString()}
+            </span>
+          </div>
+          <div style="color: #e0e0e0;">
+            <p style="margin: 8px 0; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-phone" style="color: #ff3333; width: 20px;"></i>
+              <strong>Contact:</strong> ${report.phone}
+            </p>
+            <p style="margin: 8px 0; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-location-dot" style="color: #ff3333; width: 20px;"></i>
+              <strong>Location:</strong> ${report.location}
+            </p>
+            <p style="margin: 8px 0; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-clock" style="color: #ff3333; width: 20px;"></i>
+              <strong>Status:</strong> 
+              <span style="color: #ff3333">${report.status.toUpperCase()}</span>
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button onclick="updateEmergencyStatus('${report.id}', 'responding')" 
+                    style="padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; display: flex; align-items: center; gap: 5px; background: #ff3333;">
+              <i class="fas fa-ambulance"></i> Respond
+            </button>
+            <button onclick="updateEmergencyStatus('${report.id}', 'resolved')" 
+                    style="padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; display: flex; align-items: center; gap: 5px; background: #264dff;">
+              <i class="fas fa-check"></i> Resolve
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateEmergencyStatus(reportId, newStatus) {
+      const reports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+      const reportIndex = reports.findIndex(r => r.id === reportId);
+      
+      if (reportIndex !== -1) {
+        reports[reportIndex].status = newStatus;
+        localStorage.setItem('emergencyReports', JSON.stringify(reports));
+        displayEmergencyReports();
+      }
+    }
+
+    // Load reports when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      allReports = JSON.parse(localStorage.getItem('crimeReports') || '[]');
+      displayEmergencyReports();
+      updateStatusCounts();
+      filterByStatus('all');
+    });
+
+    // Close modal when clicking the close button or outside the image
+    document.querySelector('.close-modal').onclick = function() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    document.getElementById('imageModal').onclick = function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    }
+
+    // Function to toggle emergency dropdown
+    function toggleEmergencyDropdown() {
+      const dropdown = document.getElementById('emergencyDropdown');
+      dropdown.classList.toggle('active');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('emergencyDropdown');
+      const emergencyAlert = document.querySelector('.emergency-alert');
+      if (!emergencyAlert.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Function to load and display emergency reports
+    function loadEmergencyReports() {
+      const emergencyReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+      const activeEmergencies = emergencyReports.filter(r => r.status === 'active');
+      
+      // Update emergency count
+      document.getElementById('emergencyCount').textContent = activeEmergencies.length;
+
+      // Update dropdown content
+      const dropdown = document.getElementById('emergencyDropdown');
+      if (activeEmergencies.length === 0) {
+        dropdown.innerHTML = `
+          <div class="emergency-item">
+            <p style="text-align: center; color: var(--text-blue);">
+              <i class="fas fa-check-circle"></i> No active emergencies
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      dropdown.innerHTML = activeEmergencies.map(report => `
+        <div class="emergency-item">
+          <div class="emergency-item-header">
+            <span class="emergency-type">
+              <i class="fas fa-exclamation-circle"></i>
+              ${report.type.replace(/_/g, ' ').toUpperCase()}
+            </span>
+            <span class="emergency-time">
+              ${new Date(report.timestamp).toLocaleString()}
+            </span>
+          </div>
+          <div class="emergency-details">
+            <p><i class="fas fa-phone"></i> ${report.phone}</p>
+            <p><i class="fas fa-location-dot"></i> ${report.location}</p>
+          </div>
+          <div class="emergency-actions">
+            <button class="emergency-btn respond-btn" onclick="updateEmergencyStatus('${report.id}', 'responding')">
+              <i class="fas fa-ambulance"></i> Respond
+            </button>
+            <button class="emergency-btn resolve-btn" onclick="updateEmergencyStatus('${report.id}', 'resolved')">
+              <i class="fas fa-check"></i> Resolve
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Update emergency status
+    window.updateEmergencyStatus = (reportId, newStatus) => {
+      const reports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+      const reportIndex = reports.findIndex(r => r.id === reportId);
+      if (reportIndex !== -1) {
+        reports[reportIndex].status = newStatus;
+        localStorage.setItem('emergencyReports', JSON.stringify(reports));
+        loadEmergencyReports(); // Reload emergency reports
+        loadDashboardData(); // Reload dashboard data
+      }
+    };
+
+    // Load emergency reports when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      loadEmergencyReports();
+      // Refresh emergency reports every 30 seconds
+      setInterval(loadEmergencyReports, 30000);
+    });
+  </script>
+  <script>
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+</body>
+</html>

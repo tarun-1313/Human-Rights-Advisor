@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Reports - Human Rights Advisor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #01001b;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #0033cc;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #3399ff;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #99bbff;
+      margin-top: 5px;
+    }
+
+    nav {
+      background-color: #0b0b2e;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+    }
+
+    nav a {
+      color: #66aaff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #264dff;
+      color: #fff;
+    }
+
+    .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .emergency-form {
+      background: #1a1a2e;
+      padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+            border: 1px solid #264dff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #99bbff;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #0d0d0d;
+            border: 1px solid #264dff;
+            border-radius: 4px;
+      color: #fff;
+        }
+
+        .location-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .location-group input {
+            flex: 1;
+        }
+
+        .track-btn {
+            background: #264dff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: #ff3333;
+            color: white;
+            padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+            width: 100%;
+      margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #locationStatus {
+            color: #99bbff;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .emergency-card {
+            background: #1a1a2e;
+            border-radius: 8px;
+      padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ff3333;
+        }
+
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #264dff;
+        }
+
+        .emergency-header h3 {
+            color: #ff3333;
+            margin: 0;
+        }
+
+        .emergency-details p {
+            margin: 8px 0;
+            color: #e0e0e0;
+        }
+
+        .emergency-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .emergency-btn {
+            padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .respond-btn {
+            background: #ff3333;
+        }
+
+        .status-btn {
+            background: #264dff;
+    }
+  </style>
+</head>
+<body>
+<header>
+        <h1>Human Rights Advisor</h1>
+        <p>Emergency Response System</p>
+</header>
+
+<nav>
+  <a href="main.html">Home</a>
+  <a href="chatbot.html">Ask a Problem</a>
+  <a href="allarticles.html">All Articles</a>
+  <a href="report.html">Report a Crime</a>
+        <a href="emergency.html" style="background-color: #ff3333; color: white;">Emergency</a>
+  <a href="main.html#about-us">About Us</a>
+  <a href="index.html" id="logout">Logout</a>
+</nav>
+
+<div class="container">
+        <div class="emergency-form">
+            <h2 style="color: #ff3333; margin-bottom: 20px;">
+                <i class="fas fa-exclamation-circle"></i> Emergency Report
+            </h2>
+            <form id="emergencyForm">
+                <div class="form-group">
+                    <label for="emergencyType">Type of Emergency</label>
+                    <select id="emergencyType" required>
+                        <option value="">Select Emergency Type</option>
+                        <option value="immediate_threat">Immediate Threat to Life</option>
+                        <option value="active_violence">Active Violence</option>
+                        <option value="kidnapping">Kidnapping</option>
+                        <option value="torture">Torture</option>
+                        <option value="mass_violation">Mass Human Rights Violation</option>
+                        <option value="other">Other Critical Emergency</option>
+                    </select>
+  </div>
+                <div class="form-group">
+                    <label for="phone">Emergency Contact Number</label>
+                    <input type="tel" id="phone" required placeholder="Enter your phone number">
+  </div>
+                <div class="form-group">
+                    <label for="location">Your Location</label>
+                    <div class="location-group">
+                        <input type="text" id="location" required placeholder="Your current location" readonly>
+                        <button type="button" class="track-btn" onclick="getLocation()">
+                            <i class="fas fa-location-dot"></i> Track
+                        </button>
+  </div>
+                    <div id="locationStatus"></div>
+  </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-exclamation-triangle"></i> Submit Emergency Report
+                </button>
+            </form>
+</div>
+
+<!-- Submitted Emergency Reports Section -->
+<div class="container" id="submittedEmergencyReportsContainer">
+    <h2 style="color:#ff3333; margin-top:40px;">Your Submitted Emergency Reports</h2>
+    <div id="submittedEmergencyReportsList">
+        <!-- Emergency reports will be dynamically inserted here -->
+    </div>
+</div>
+
+<script>
+        function getLocation() {
+            const locationInput = document.getElementById('location');
+            const statusDiv = document.getElementById('locationStatus');
+            
+            statusDiv.textContent = 'Getting your location...';
+            locationInput.value = '';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        locationInput.value = `${latitude}, ${longitude}`;
+                        statusDiv.textContent = 'Location tracked successfully!';
+                        statusDiv.style.color = '#4CAF50';
+                    },
+                    (error) => {
+                        statusDiv.textContent = 'Error getting location: ' + error.message;
+                        statusDiv.style.color = '#ff3333';
+                    },
+                    { timeout: 5000 }
+                );
+            } else {
+                statusDiv.textContent = 'Geolocation is not supported by your browser';
+                statusDiv.style.color = '#ff3333';
+            }
+        }
+
+        document.getElementById('emergencyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emergencyReport = {
+                id: 'EMR_' + Date.now(),
+                timestamp: new Date().toISOString(),
+                type: document.getElementById('emergencyType').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                status: 'active',
+                priority: 'high'
+            };
+
+            const existingReports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+            existingReports.unshift(emergencyReport);
+            localStorage.setItem('emergencyReports', JSON.stringify(existingReports));
+
+            alert('Emergency report submitted successfully! Authorities have been notified.');
+            this.reset();
+            document.getElementById('locationStatus').textContent = '';
+            renderSubmittedEmergencyReports();
+        });
+
+        // Only keep this function to render submitted emergency reports
+        function renderSubmittedEmergencyReports() {
+            const container = document.getElementById('submittedEmergencyReportsList');
+            if (!container) return;
+            let reports = [];
+            let error = '';
+            try {
+                if (typeof localStorage === 'undefined') {
+                    error = 'localStorage is not available in this browser.';
+                } else {
+                    const raw = localStorage.getItem('emergencyReports');
+                    if (!raw) {
+                        reports = [];
+                    } else {
+                        try {
+                            reports = JSON.parse(raw);
+                        } catch (e) {
+                            error = 'Could not parse emergency reports data.';
+                        }
+                    }
+                }
+            } catch (e) {
+                error = 'Error accessing localStorage.';
+            }
+            if (error) {
+                container.innerHTML = `<p style='color:#ff3333;'>${error}</p>`;
+                return;
+            }
+            if (!Array.isArray(reports) || reports.length === 0) {
+                container.innerHTML = '<p style="color:#aaa;">No emergency reports submitted yet.</p>';
+                return;
+            }
+            container.innerHTML = reports.map((report, idx) => `
+                <div style="background:#2a1a1a; border:1px solid #ff3333; border-radius:8px; padding:18px; margin-bottom:18px; position:relative;">
+                    <div style="font-size:1.1rem; color:#ff3333; margin-bottom:6px;">Emergency ID: <b>${report.id}</b> <span style="float:right; color:#ffb366; font-size:0.95rem;">Status: ${report.status}</span></div>
+                    <div><b>Type:</b> ${report.type ? report.type.replace(/_/g, ' ').toUpperCase() : ''}</div>
+                    <div><b>Contact:</b> ${report.phone || ''}</div>
+                    <div><b>Location:</b> ${report.location || ''}</div>
+                    <div><b>Submitted:</b> ${report.timestamp ? new Date(report.timestamp).toLocaleString() : ''}</div>
+                    <div style="display:flex; justify-content:center; margin-top:16px;">
+                        <button onclick="deleteEmergencyReport('${report.id}')" style="background:#ff3333; color:#fff; border:none; border-radius:4px; padding:7px 18px; cursor:pointer; font-size:1rem;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add the delete function
+        function deleteEmergencyReport(reportId) {
+            let reports = [];
+            try {
+                reports = JSON.parse(localStorage.getItem('emergencyReports') || '[]');
+            } catch (e) {
+                reports = [];
+            }
+            reports = reports.filter(r => r.id !== reportId);
+            localStorage.setItem('emergencyReports', JSON.stringify(reports));
+            renderSubmittedEmergencyReports();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSubmittedEmergencyReports();
+        });
+</script>
+</body>
+</html>
